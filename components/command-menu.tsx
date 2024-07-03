@@ -1,13 +1,7 @@
 'use client'
 
 import { AlertDialogProps } from '@radix-ui/react-alert-dialog'
-import {
-  CircleIcon,
-  FileIcon,
-  LaptopIcon,
-  MoonIcon,
-  SunIcon
-} from '@radix-ui/react-icons'
+import { FileIcon, LaptopIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import * as React from 'react'
@@ -31,7 +25,7 @@ export function CommandMenu({ ...props }: AlertDialogProps) {
   const { setTheme } = useTheme()
 
   React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || e.key === '/') {
         if (
           (e.target instanceof HTMLElement && e.target.isContentEditable) ||
@@ -43,18 +37,21 @@ export function CommandMenu({ ...props }: AlertDialogProps) {
         }
 
         e.preventDefault()
-        setOpen(open => !open)
+        setOpen(prevOpen => !prevOpen)
       }
     }
 
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   const runCommand = React.useCallback((command: () => unknown) => {
     setOpen(false)
     command()
   }, [])
+
+  const isMac =
+    typeof navigator !== 'undefined' && navigator.userAgent.includes('Mac OS X')
 
   return (
     <>
@@ -69,7 +66,7 @@ export function CommandMenu({ ...props }: AlertDialogProps) {
         <span className="hidden lg:inline-flex">Search documentation...</span>
         <span className="inline-flex lg:hidden">Search...</span>
         <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-          <span className="text-xs">⌘</span>K
+          <span className="text-xs">{isMac ? '⌘' : 'Ctrl'}</span>K
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -78,7 +75,7 @@ export function CommandMenu({ ...props }: AlertDialogProps) {
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Links">
             {docsConfig.mainNav
-              .filter(navitem => !navitem.external)
+              .filter(navItem => !navItem.external)
               .map(navItem => (
                 <CommandItem
                   key={navItem.href}

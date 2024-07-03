@@ -25,7 +25,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         className={cn(
           'font-sans antialiased',
           GeistSans.variable,
-          GeistMono.variable
+          GeistMono.variable,
+          'h-screen'
         )}
       >
         <ThemeProvider
@@ -34,9 +35,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col">
+          <div className="flex h-full flex-col">
             <Header />
-            <main className="flex flex-1 flex-col">{children}</main>
+            <main className="flex flex-1 flex-col items-center justify-center overflow-hidden">
+              {children}
+            </main>
             <Footer />
           </div>
         </ThemeProvider>
