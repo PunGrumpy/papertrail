@@ -37,11 +37,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-full flex-col">
+          <div className="relative flex min-h-screen flex-col bg-background">
             <Header />
-            <main className="flex flex-1 flex-col items-center justify-center overflow-hidden">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <Footer />
           </div>
         </ThemeProvider>
