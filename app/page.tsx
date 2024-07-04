@@ -38,22 +38,6 @@ export default async function Page() {
           </Link>
         </PageActions>
       </PageHeader>
-      <section className="overflow-hidden rounded-lg border bg-background shadow-md md:hidden md:shadow-xl">
-        <Image
-          src="/examples/mail-dark.png"
-          width={1280}
-          height={727}
-          alt="Mail in Dark Mode"
-          className="hidden dark:block"
-        />
-        <Image
-          src="/examples/mail-light.png"
-          width={1280}
-          height={727}
-          alt="Mail in Light Mode"
-          className="block dark:hidden"
-        />
-      </section>
     </div>
   )
 }
