@@ -7,7 +7,6 @@ import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { toast } from 'sonner'
 
-import { authenticate } from '@/app/login/actions'
 import { signup } from '@/app/signup/actions'
 import { getMessageFromCode } from '@/lib/utils'
 
