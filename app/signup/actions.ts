@@ -1,10 +1,10 @@
 'use server'
 
-import { kv } from '@vercel/kv'
 import { AuthError } from 'next-auth'
 import { z } from 'zod'
 
 import { signIn } from '@/auth'
+import { redis } from '@/lib/db'
 import { getStringFromBuffer, ResultCode } from '@/lib/utils'
 
 import { getUser } from '../login/actions'
@@ -29,7 +29,7 @@ export async function createUser(
       salt
     }
 
-    await kv.hmset(`user:${email}`, user)
+    await redis.hset(`user:${email}`, user)
 
     return {
       type: 'success',

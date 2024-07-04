@@ -1,15 +1,15 @@
 'use server'
 
-import { kv } from '@vercel/kv'
 import { AuthError } from 'next-auth'
 import { z } from 'zod'
 
 import { signIn } from '@/auth'
+import { redis } from '@/lib/db'
 import { ResultCode } from '@/lib/utils'
 import { User } from '@/types/user'
 
 export async function getUser(email: string) {
-  const user = await kv.hgetall<User>(`user:${email}`)
+  const user = await redis.hgetall<User>(`user:${email}`)
   return user
 }
 
