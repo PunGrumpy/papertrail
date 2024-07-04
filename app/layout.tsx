@@ -7,6 +7,7 @@ import type { Metadata } from 'next'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           'h-screen'
         )}
       >
+        <Toaster position="top-center" containerAriaLabel="Toaster" />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
