@@ -27,14 +27,6 @@ export function MainNav() {
         >
           Docs
         </Link>
-        <Link
-          href={siteConfig.links.github}
-          className={cn(
-            'hidden text-foreground/60 transition-colors hover:text-foreground/80 lg:block'
-          )}
-        >
-          GitHub
-        </Link>
       </nav>
     </div>
   )
