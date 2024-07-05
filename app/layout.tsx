@@ -39,7 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <SessionProvider>
-            <div className="relative flex min-h-screen flex-col bg-background">
+            <div className="flex h-screen flex-col">
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />
