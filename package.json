@@ -6,7 +6,6 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "dev:turbo": "next dev --turbo",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "next lint && eslint .",
