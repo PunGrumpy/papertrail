@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  CircleIcon,
-  GitHubLogoIcon,
-  VercelLogoIcon
-} from '@radix-ui/react-icons'
-import Link from 'next/link'
+import { CircleIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
@@ -13,7 +8,6 @@ import { toast } from 'sonner'
 
 import { authenticate, GitHubSignIn } from '@/app/login/actions'
 import { signup } from '@/app/signup/actions'
-import { signIn } from '@/auth'
 import { getMessageFromCode } from '@/lib/utils'
 
 import { Button } from './ui/button'
@@ -67,29 +61,36 @@ export default function AuthForm({ initialType }: AuthFormProps) {
         </CardHeader>
         <CardContent>
           <form action={dispatch} className="flex flex-col gap-4">
-            <Label htmlFor="email" className="text-sm text-muted-foreground">
-              Email Address
-            </Label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="Enter your email address"
-              required
-              className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
-            />
-            <Label htmlFor="password" className="text-sm text-muted-foreground">
-              Password
-            </Label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              required
-              minLength={6}
-              className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
-            />
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="email" className="text-sm text-muted-foreground">
+                Email Address
+              </Label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter your email address"
+                required
+                className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label
+                htmlFor="password"
+                className="text-sm text-muted-foreground"
+              >
+                Password
+              </Label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                minLength={6}
+                className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
+              />
+            </div>
             <AuthButton isLogin={isLogin} />
           </form>
           <Separator />
