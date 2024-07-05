@@ -1,12 +1,20 @@
 'use client'
 
 import {
-  LoginLink,
-  RegisterLink
-} from '@kinde-oss/kinde-auth-nextjs/components'
-import { CircleIcon } from '@radix-ui/react-icons'
+  CircleIcon,
+  GitHubLogoIcon,
+  VercelLogoIcon
+} from '@radix-ui/react-icons'
 import Link from 'next/link'
-import { useFormStatus } from 'react-dom'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useFormState, useFormStatus } from 'react-dom'
+import { toast } from 'sonner'
+
+import { authenticate, GitHubSignIn } from '@/app/login/actions'
+import { signup } from '@/app/signup/actions'
+import { signIn } from '@/auth'
+import { getMessageFromCode } from '@/lib/utils'
 
 import { Button } from './ui/button'
 import {
@@ -17,29 +25,48 @@ import {
   CardTitle
 } from './ui/card'
 import { Label } from './ui/label'
+import { Separator } from './ui/separator'
 
 interface AuthFormProps {
-  type: 'login' | 'signup'
+  initialType: 'login' | 'signup'
 }
 
-export default function AuthForm({ type }: AuthFormProps) {
-  const isLogin = type === 'login'
+export default function AuthForm({ initialType }: AuthFormProps) {
+  const router = useRouter()
+  const [isLogin, setIsLogin] = useState(initialType === 'login')
+  const [result, dispatch] = useFormState(
+    isLogin ? authenticate : signup,
+    undefined
+  )
+
+  useEffect(() => {
+    if (result) {
+      if (result.type === 'error') {
+        toast.error(getMessageFromCode(result.resultCode))
+      } else {
+        toast.success(getMessageFromCode(result.resultCode))
+        router.refresh()
+      }
+    }
+  }, [result, router])
+
+  const toggleForm = () => {
+    setIsLogin(!isLogin)
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center space-y-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>
-            {isLogin ? 'Log in to Your Account' : 'Sign up for an Account'}
+            {isLogin ? 'Log in to Your Account' : 'Register for an Account'}
           </CardTitle>
           <CardDescription>
-            {isLogin
-              ? 'Please enter your email address and password'
-              : 'Please fill in the details to create an account'}
+            Please enter your email address and password
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="flex flex-col gap-4">
+          <form action={dispatch} className="flex flex-col gap-4">
             <Label htmlFor="email" className="text-sm text-muted-foreground">
               Email Address
             </Label>
@@ -51,24 +78,6 @@ export default function AuthForm({ type }: AuthFormProps) {
               required
               className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
             />
-            {!isLogin && (
-              <>
-                <Label
-                  htmlFor="username"
-                  className="text-sm text-muted-foreground"
-                >
-                  Username
-                </Label>
-                <input
-                  id="username"
-                  type="text"
-                  name="username"
-                  placeholder="Enter your username"
-                  required
-                  className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
-                />
-              </>
-            )}
             <Label htmlFor="password" className="text-sm text-muted-foreground">
               Password
             </Label>
@@ -83,22 +92,32 @@ export default function AuthForm({ type }: AuthFormProps) {
             />
             <AuthButton isLogin={isLogin} />
           </form>
+          <Separator />
+          <div className="mt-4 flex flex-row gap-2">
+            <GitHubButton />
+          </div>
         </CardContent>
       </Card>
       <div className="flex flex-row gap-1 text-sm text-muted-foreground">
         {isLogin ? (
           <>
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="underline hover:text-foreground">
+            <button
+              onClick={toggleForm}
+              className="hover:text-foreground hover:underline"
+            >
               Sign up
-            </Link>
+            </button>
           </>
         ) : (
           <>
             Already have an account?{' '}
-            <Link href="/login" className="underline hover:text-foreground">
-              Log in
-            </Link>
+            <button
+              onClick={toggleForm}
+              className="hover:text-foreground hover:underline"
+            >
+              Sign in
+            </button>
           </>
         )}
       </div>
@@ -110,27 +129,28 @@ function AuthButton({ isLogin }: { isLogin: boolean }) {
   const { pending } = useFormStatus()
 
   return (
-    <Button
-      className="my-4 flex h-10 w-full items-center justify-center rounded-md p-2 text-sm font-semibold"
-      aria-disabled={pending}
-    >
+    <Button className="my-4 flex h-10 w-full text-sm" aria-disabled={pending}>
       {pending ? (
         <CircleIcon className="size-6 animate-spin" />
       ) : isLogin ? (
-        // 'Log in'
-        <LoginLink
-          type="button"
-          authUrlParams={{
-            connection_id:
-              process.env.NEXT_PUBLIC_KINDE_CONNECTION_EMAIL_PASSWORD || ''
-          }}
-        >
-          Log in
-        </LoginLink>
+        'Log in'
       ) : (
-        // 'Sign up'
-        <RegisterLink>Sign up</RegisterLink>
+        'Create Account'
       )}
+    </Button>
+  )
+}
+
+function GitHubButton() {
+  return (
+    <Button
+      variant="outline"
+      className="flex h-10 w-full text-sm"
+      onClick={async () => {
+        await GitHubSignIn()
+      }}
+    >
+      <GitHubLogoIcon className="size-5" />
     </Button>
   )
 }

@@ -1,9 +1,3 @@
-import {
-  LoginLink,
-  LogoutLink,
-  RegisterLink
-} from '@kinde-oss/kinde-auth-nextjs/components'
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { ExitIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import * as React from 'react'
@@ -28,10 +22,6 @@ import {
 } from './ui/dropdown-menu'
 
 export async function Header() {
-  const session = getKindeServerSession()
-  const isAuthenticated = await session.isAuthenticated()
-  const user = await session.getUser()
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -62,60 +52,6 @@ export async function Header() {
               </Link>
               <ThemeToggle />
             </div>
-            {!isAuthenticated ? (
-              <div className="flex items-center space-x-2">
-                <Button title="Log in" variant="outline">
-                  <LoginLink>Log in</LoginLink>
-                </Button>
-                <Button title="Sign up" variant="default">
-                  <RegisterLink>Sign up</RegisterLink>
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Avatar
-                      title="User profile"
-                      className="size-8 cursor-pointer"
-                    >
-                      <AvatarImage
-                        src={user?.picture || 'https://github.com/shadcn.png'}
-                        alt={user?.id}
-                      />
-                      <AvatarFallback>
-                        {`${user?.given_name?.[0] || ''}${user?.family_name?.[0] || ''}`}
-                      </AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    className="w-56"
-                    align="end"
-                    sideOffset={8}
-                  >
-                    <DropdownMenuLabel>
-                      <div className="flex flex-col space-y-1">
-                        <span className="text-base">
-                          {user?.given_name} {user?.family_name}
-                        </span>
-                        <span className="text-sm font-light text-muted-foreground">
-                          {user?.email}
-                        </span>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <LogoutLink className="flex w-full items-center space-x-2">
-                        Log out
-                        <DropdownMenuShortcut>
-                          <ExitIcon className="size-4" />
-                        </DropdownMenuShortcut>
-                      </LogoutLink>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )}
           </nav>
         </div>
       </div>
