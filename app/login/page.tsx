@@ -1,9 +1,9 @@
-import AuthForm from '@/components/auth/auth'
+import LoginForm from '@/components/auth/login'
 
 export default async function LoginPage() {
   return (
-    <main className="flex flex-col">
-      <AuthForm initialType="login" />
+    <main className="flex h-screen w-full items-center justify-center">
+      <LoginForm />
     </main>
   )
 }

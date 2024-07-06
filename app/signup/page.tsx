@@ -1,9 +1,9 @@
-import AuthForm from '@/components/auth/auth'
+import SignUpForm from '@/components/auth/signup'
 
 export default async function SignupPage() {
   return (
-    <main className="flex flex-col">
-      <AuthForm initialType="signup" />
+    <main className="flex h-screen w-full items-center justify-center">
+      <SignUpForm />
     </main>
   )
 }

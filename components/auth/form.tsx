@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Control } from 'react-hook-form'
 
 import {
@@ -16,6 +17,7 @@ interface FieldProps {
     givenName?: string
     familyName?: string
   }>
+  forgotPassword?: boolean
 }
 
 export function EmailField({ control }: FieldProps) {
@@ -36,14 +38,24 @@ export function EmailField({ control }: FieldProps) {
   )
 }
 
-export function PasswordField({ control }: FieldProps) {
+export function PasswordField({ control, forgotPassword }: FieldProps) {
   return (
     <FormField
       control={control}
       name="password"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Password</FormLabel>
+          <FormLabel className="flex items-center">
+            Password
+            {forgotPassword && (
+              <Link
+                href="/"
+                className="ml-auto text-xs text-muted-foreground hover:text-foreground hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            )}
+          </FormLabel>
           <FormControl>
             <Input {...field} type="password" placeholder="Password" />
           </FormControl>
