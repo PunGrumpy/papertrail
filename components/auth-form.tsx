@@ -1,11 +1,5 @@
 'use client'
 
-import {
-  CircleIcon,
-  GitHubLogoIcon,
-  LinkedInLogoIcon,
-  VercelLogoIcon
-} from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
@@ -15,6 +9,7 @@ import { authenticate, GitHubSignIn } from '@/app/login/actions'
 import { signup } from '@/app/signup/actions'
 import { getMessageFromCode } from '@/lib/utils'
 
+import { Icons } from './icons'
 import { Button } from './ui/button'
 import {
   Card,
@@ -100,6 +95,7 @@ export default function AuthForm({ initialType }: AuthFormProps) {
           <Separator />
           <div className="mt-4 flex flex-row gap-2">
             <GitHubButton />
+            <GoogleButton />
           </div>
         </CardContent>
       </Card>
@@ -136,9 +132,9 @@ function AuthButton({ isLogin }: { isLogin: boolean }) {
   return (
     <Button className="my-4 flex h-10 w-full text-sm" aria-disabled={pending}>
       {pending ? (
-        <CircleIcon className="size-6 animate-spin" />
+        <Icons.spinner className="size-6 animate-spin" />
       ) : isLogin ? (
-        'Continue with Email'
+        'Log In with Email'
       ) : (
         'Create Account with Email'
       )}
@@ -147,6 +143,8 @@ function AuthButton({ isLogin }: { isLogin: boolean }) {
 }
 
 function GitHubButton() {
+  const { pending } = useFormStatus()
+
   return (
     <Button
       variant="outline"
@@ -155,7 +153,31 @@ function GitHubButton() {
         await GitHubSignIn()
       }}
     >
-      <GitHubLogoIcon className="size-5" />
+      {pending ? (
+        <Icons.spinner className="size-5 animate-spin" />
+      ) : (
+        <Icons.github className="size-5" />
+      )}
+    </Button>
+  )
+}
+
+function GoogleButton() {
+  const { pending } = useFormStatus()
+
+  return (
+    <Button
+      variant="outline"
+      className="flex h-10 w-full text-sm"
+      onClick={async () => {
+        toast.error('Google Sign In is not implemented yet')
+      }}
+    >
+      {pending ? (
+        <Icons.spinner className="size-5 animate-spin" />
+      ) : (
+        <Icons.google className="size-5" />
+      )}
     </Button>
   )
 }
