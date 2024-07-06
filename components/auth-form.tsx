@@ -134,9 +134,9 @@ function AuthButton({ isLogin }: { isLogin: boolean }) {
       {pending ? (
         <CircleIcon className="size-6 animate-spin" />
       ) : isLogin ? (
-        'Log in'
+        'Continue with Email'
       ) : (
-        'Create Account'
+        'Create Account with Email'
       )}
     </Button>
   )

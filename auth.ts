@@ -7,7 +7,7 @@ import { getUser } from './app/login/actions'
 import { authConfig } from './auth.config'
 import { getStringFromBuffer } from './lib/utils'
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({

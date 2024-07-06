@@ -1,27 +1,20 @@
-import { ExitIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
+import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
-import * as React from 'react'
 
+import { auth } from '@/auth'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 
 import { CommandMenu } from './command-menu'
+import { DropdownMenuClient } from './dropdown-menu'
 import { MainNav } from './main-nav'
 import { MobileNav } from './mobile-nav'
 import { ThemeToggle } from './theme-toggle'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger
-} from './ui/dropdown-menu'
 
 export async function Header() {
+  const session = await auth()
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -51,6 +44,24 @@ export async function Header() {
                 </div>
               </Link>
               <ThemeToggle />
+            </div>
+            <div className="flex items-center space-x-2">
+              {!session ? (
+                <>
+                  <Link href="/login">
+                    <Button title="Log in" variant="outline">
+                      Log in
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button title="Sign up" variant="default">
+                      Sign up
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <DropdownMenuClient session={session} />
+              )}
             </div>
           </nav>
         </div>
