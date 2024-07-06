@@ -32,7 +32,6 @@ export default async function Page() {
             rel="noreferrer"
             className={cn(buttonVariants({ variant: 'outline' }))}
           >
-            <GitHubLogoIcon className="size-4" />
             GitHub
           </Link>
         </PageActions>
