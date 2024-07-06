@@ -1,6 +1,6 @@
 'use client'
 
-import { HamburgerMenuIcon, ViewVerticalIcon } from '@radix-ui/react-icons'
+import { ViewVerticalIcon } from '@radix-ui/react-icons'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
@@ -9,6 +9,7 @@ import { docsConfig } from '@/config/docs'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 
+import { Icons } from './icons'
 import { Button } from './ui/button'
 import { ScrollArea } from './ui/scroll-area'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
@@ -23,7 +24,7 @@ export function MobileNav() {
           variant="ghost"
           className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
         >
-          <HamburgerMenuIcon className="size-5" />
+          <Icons.menu className="size-5" />
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>

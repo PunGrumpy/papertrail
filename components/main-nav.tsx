@@ -7,12 +7,15 @@ import * as React from 'react'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 
+import { Icons } from './icons'
+
 export function MainNav() {
   const pathname = usePathname()
 
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
+        <Icons.logo className="size-6 fill-current" />
         <span className="hidden font-bold sm:inline-block">
           {siteConfig.name}
         </span>
