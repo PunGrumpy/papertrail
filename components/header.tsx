@@ -48,15 +48,14 @@ export async function Header() {
             <div className="flex items-center space-x-2">
               {!session ? (
                 <>
-                  <Link href="/login">
-                    <Button title="Log in" variant="outline">
-                      Log in
-                    </Button>
+                  <Link
+                    href="/login"
+                    className={cn(buttonVariants({ variant: 'outline' }))}
+                  >
+                    Log in
                   </Link>
-                  <Link href="/signup">
-                    <Button title="Sign up" variant="default">
-                      Sign up
-                    </Button>
+                  <Link href="/signup" className={cn(buttonVariants())}>
+                    Sign up
                   </Link>
                 </>
               ) : (
