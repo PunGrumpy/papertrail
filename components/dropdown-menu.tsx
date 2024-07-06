@@ -20,13 +20,20 @@ interface DropdownMenuClientProps {
 }
 
 export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
+  const { user } = session
+  const { name, email, image } = user || {}
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar title="User avatar" className="size-8 cursor-pointer">
           <AvatarImage
-            src={session.user?.image || ''}
-            alt={session.user?.name || 'User avatar'}
+            src={
+              image
+                ? image
+                : `https://www.gravatar.com/avatar/${email}?d=identicon`
+            }
+            alt={name || 'User avatar'}
           />
           <AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
@@ -34,9 +41,9 @@ export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
       <DropdownMenuContent className="w-56" align="end" sideOffset={8}>
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
-            <span className="text-base">{session.user?.name}</span>
+            <span className="text-base">{name}</span>
             <span className="text-sm font-light text-muted-foreground">
-              {session.user?.email}
+              {email}
             </span>
           </div>
         </DropdownMenuLabel>
