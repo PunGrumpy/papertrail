@@ -23,6 +23,7 @@ export function CommandMenu({ ...props }: AlertDialogProps) {
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
   const { setTheme } = useTheme()
+  const [isMac, setIsMac] = React.useState(false)
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -45,13 +46,14 @@ export function CommandMenu({ ...props }: AlertDialogProps) {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  React.useEffect(() => {
+    setIsMac(navigator.userAgent.includes('Mac OS X'))
+  }, [])
+
   const runCommand = React.useCallback((command: () => unknown) => {
     setOpen(false)
     command()
   }, [])
-
-  const isMac =
-    typeof navigator !== 'undefined' && navigator.userAgent.includes('Mac OS X')
 
   return (
     <>
