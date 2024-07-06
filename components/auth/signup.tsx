@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useFormState } from 'react-dom'
@@ -92,12 +93,9 @@ export default function SignUpForm() {
         </div>
         <div className="mt-4 text-center text-sm text-muted-foreground">
           Already have an account?{' '}
-          <button
-            onClick={() => router.push('/login')}
-            className="hover:text-foreground hover:underline"
-          >
+          <Link href="/login" className="hover:text-foreground hover:underline">
             Log in here
-          </button>
+          </Link>
         </div>
       </CardContent>
     </Card>
