@@ -6,11 +6,20 @@ import { GitHubSignIn } from '@/app/login/actions'
 import { Icons } from '../icons'
 import { Button } from '../ui/button'
 
-export function AuthButton({ isLogin }: { isLogin: boolean }) {
+interface ButtonProps {
+  isLogin?: boolean
+  isDisable?: boolean
+}
+
+export function AuthButton({ isLogin, isDisable }: ButtonProps) {
   const { pending } = useFormStatus()
 
   return (
-    <Button className="my-4 flex h-10 w-full text-sm" aria-disabled={pending}>
+    <Button
+      className="my-4 flex h-10 w-full text-sm"
+      aria-disabled={pending}
+      disabled={isDisable}
+    >
       {pending ? (
         <Icons.spinner className="size-6 animate-spin" />
       ) : isLogin ? (
@@ -22,7 +31,7 @@ export function AuthButton({ isLogin }: { isLogin: boolean }) {
   )
 }
 
-export function GitHubButton() {
+export function GitHubButton({ isDisable }: ButtonProps) {
   const { pending } = useFormStatus()
 
   return (
@@ -32,6 +41,7 @@ export function GitHubButton() {
       onClick={async () => {
         await GitHubSignIn()
       }}
+      disabled={isDisable}
     >
       {pending ? (
         <Icons.spinner className="size-5 animate-spin" />
@@ -42,7 +52,7 @@ export function GitHubButton() {
   )
 }
 
-export function GoogleButton() {
+export function GoogleButton({ isDisable }: ButtonProps) {
   const { pending } = useFormStatus()
 
   return (
@@ -52,6 +62,7 @@ export function GoogleButton() {
       onClick={async () => {
         toast.error('Google Sign In is not implemented yet')
       }}
+      disabled={isDisable}
     >
       {pending ? (
         <Icons.spinner className="size-5 animate-spin" />
