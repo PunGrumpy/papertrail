@@ -1,6 +1,10 @@
 'use client'
 
-import { CircleIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
+import {
+  CircleIcon,
+  GitHubLogoIcon,
+  VercelLogoIcon
+} from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
@@ -95,7 +99,7 @@ export default function AuthForm({ initialType }: AuthFormProps) {
           <Separator />
           <div className="mt-4 flex flex-row gap-2">
             <GitHubButton />
-            <GoogleButton />
+            <VercelButton />
           </div>
         </CardContent>
       </Card>
@@ -156,16 +160,16 @@ function GitHubButton() {
   )
 }
 
-function GoogleButton() {
+function VercelButton() {
   return (
     <Button
       variant="outline"
       className="flex h-10 w-full text-sm"
       onClick={async () => {
-        await GitHubSignIn()
+        await toast.error('Vercel login is not implemented yet')
       }}
     >
-      <GitHubLogoIcon className="size-5" />
+      <VercelLogoIcon className="size-5" />
     </Button>
   )
 }
