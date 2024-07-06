@@ -69,9 +69,9 @@ export default function AuthForm({ initialType }: AuthFormProps) {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="p@example.com"
                 required
-                className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
+                className="peer block w-full rounded-md border bg-background p-2 text-sm outline-none"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -85,10 +85,9 @@ export default function AuthForm({ initialType }: AuthFormProps) {
                 id="password"
                 type="password"
                 name="password"
-                placeholder="Enter your password"
                 required
                 minLength={6}
-                className="peer block w-full rounded-md border bg-zinc-50 p-2 text-sm outline-none dark:bg-zinc-950"
+                className="peer block w-full rounded-md border bg-background p-2 text-sm outline-none"
               />
             </div>
             <AuthButton isLogin={isLogin} />
@@ -96,6 +95,7 @@ export default function AuthForm({ initialType }: AuthFormProps) {
           <Separator />
           <div className="mt-4 flex flex-row gap-2">
             <GitHubButton />
+            <GoogleButton />
           </div>
         </CardContent>
       </Card>
@@ -143,6 +143,20 @@ function AuthButton({ isLogin }: { isLogin: boolean }) {
 }
 
 function GitHubButton() {
+  return (
+    <Button
+      variant="outline"
+      className="flex h-10 w-full text-sm"
+      onClick={async () => {
+        await GitHubSignIn()
+      }}
+    >
+      <GitHubLogoIcon className="size-5" />
+    </Button>
+  )
+}
+
+function GoogleButton() {
   return (
     <Button
       variant="outline"
