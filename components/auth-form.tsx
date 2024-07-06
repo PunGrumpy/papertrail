@@ -1,9 +1,12 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { z } from 'zod'
 
 import { authenticate, GitHubSignIn } from '@/app/login/actions'
 import { signup } from '@/app/signup/actions'
@@ -18,12 +21,27 @@ import {
   CardHeader,
   CardTitle
 } from './ui/card'
-import { Label } from './ui/label'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from './ui/form'
+import { Input } from './ui/input'
 import { Separator } from './ui/separator'
 
 interface AuthFormProps {
   initialType: 'login' | 'signup'
 }
+
+const FormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, {
+    message: 'Password must be at least 6 characters long'
+  })
+})
 
 export default function AuthForm({ initialType }: AuthFormProps) {
   const router = useRouter()
@@ -32,6 +50,14 @@ export default function AuthForm({ initialType }: AuthFormProps) {
     isLogin ? authenticate : signup,
     undefined
   )
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
+  })
 
   useEffect(() => {
     if (result) {
@@ -60,38 +86,41 @@ export default function AuthForm({ initialType }: AuthFormProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={dispatch} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email" className="text-sm text-muted-foreground">
-                Email Address
-              </Label>
-              <input
-                id="email"
-                type="email"
+          <Form {...form}>
+            <form action={dispatch} className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
                 name="email"
-                placeholder="p@example.com"
-                required
-                className="peer block w-full rounded-md border bg-background p-2 text-sm outline-none"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="p@example.com" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label
-                htmlFor="password"
-                className="text-sm text-muted-foreground"
-              >
-                Password
-              </Label>
-              <input
-                id="password"
-                type="password"
+              <FormField
+                control={form.control}
                 name="password"
-                required
-                minLength={6}
-                className="peer block w-full rounded-md border bg-background p-2 text-sm outline-none"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder="Password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <AuthButton isLogin={isLogin} />
-          </form>
+              <AuthButton isLogin={isLogin} />
+            </form>
+          </Form>
           <Separator />
           <div className="mt-4 flex flex-row gap-2">
             <GitHubButton />
