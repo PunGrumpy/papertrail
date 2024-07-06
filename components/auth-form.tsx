@@ -3,6 +3,7 @@
 import {
   CircleIcon,
   GitHubLogoIcon,
+  LinkedInLogoIcon,
   VercelLogoIcon
 } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
@@ -99,7 +100,6 @@ export default function AuthForm({ initialType }: AuthFormProps) {
           <Separator />
           <div className="mt-4 flex flex-row gap-2">
             <GitHubButton />
-            <VercelButton />
           </div>
         </CardContent>
       </Card>
@@ -156,20 +156,6 @@ function GitHubButton() {
       }}
     >
       <GitHubLogoIcon className="size-5" />
-    </Button>
-  )
-}
-
-function VercelButton() {
-  return (
-    <Button
-      variant="outline"
-      className="flex h-10 w-full text-sm"
-      onClick={async () => {
-        await toast.error('Vercel login is not implemented yet')
-      }}
-    >
-      <VercelLogoIcon className="size-5" />
     </Button>
   )
 }
