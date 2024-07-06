@@ -20,22 +20,21 @@ interface DropdownMenuClientProps {
 }
 
 export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
-  const { user } = session
-  const { name, email, image } = user || {}
+  const user = session?.user
+
+  const name = user?.name ?? 'User'
+  const email = user?.email ?? 'user@example.com'
+  const image =
+    user?.image ?? `https://www.gravatar.com/avatar/${email}?d=identicon`
+
+  const avatarFallback = name.charAt(0)
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar title="User avatar" className="size-8 cursor-pointer">
-          <AvatarImage
-            src={
-              image
-                ? image
-                : `https://www.gravatar.com/avatar/${email}?d=identicon`
-            }
-            alt={name || 'User avatar'}
-          />
-          <AvatarFallback>{session.user?.name?.charAt(0)}</AvatarFallback>
+          <AvatarImage src={image} alt={name} />
+          <AvatarFallback>{avatarFallback}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" sideOffset={8}>
