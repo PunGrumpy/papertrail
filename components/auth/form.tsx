@@ -3,24 +3,22 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useFormState } from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { authenticate, GitHubSignIn } from '@/app/login/actions'
+import { authenticate } from '@/app/login/actions'
 import { signup } from '@/app/signup/actions'
 import { getMessageFromCode } from '@/lib/utils'
 
-import { Icons } from './icons'
-import { Button } from './ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle
-} from './ui/card'
+} from '../ui/card'
 import {
   Form,
   FormControl,
@@ -28,20 +26,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from './ui/form'
-import { Input } from './ui/input'
-import { Separator } from './ui/separator'
+} from '../ui/form'
+import { Input } from '../ui/input'
+import { Separator } from '../ui/separator'
+import { FormSchema } from './actions'
+import { AuthButton, GitHubButton, GoogleButton } from './button'
 
 interface AuthFormProps {
   initialType: 'login' | 'signup'
 }
-
-const FormSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6, {
-    message: 'Password must be at least 6 characters long'
-  })
-})
 
 export default function AuthForm({ initialType }: AuthFormProps) {
   const router = useRouter()
@@ -51,11 +44,13 @@ export default function AuthForm({ initialType }: AuthFormProps) {
     undefined
   )
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<ReturnType<typeof FormSchema>>>({
+    resolver: zodResolver(FormSchema(isLogin)),
     defaultValues: {
       email: '',
-      password: ''
+      password: '',
+      givenName: '',
+      familyName: ''
     }
   })
 
@@ -72,6 +67,12 @@ export default function AuthForm({ initialType }: AuthFormProps) {
 
   const toggleForm = () => {
     setIsLogin(!isLogin)
+    form.reset({
+      email: '',
+      password: '',
+      givenName: '',
+      familyName: ''
+    })
   }
 
   return (
@@ -118,6 +119,36 @@ export default function AuthForm({ initialType }: AuthFormProps) {
                   </FormItem>
                 )}
               />
+              {!isLogin && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="givenName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="John" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="familyName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Doe" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
               <AuthButton isLogin={isLogin} />
             </form>
           </Form>
@@ -152,61 +183,5 @@ export default function AuthForm({ initialType }: AuthFormProps) {
         )}
       </div>
     </div>
-  )
-}
-
-function AuthButton({ isLogin }: { isLogin: boolean }) {
-  const { pending } = useFormStatus()
-
-  return (
-    <Button className="my-4 flex h-10 w-full text-sm" aria-disabled={pending}>
-      {pending ? (
-        <Icons.spinner className="size-6 animate-spin" />
-      ) : isLogin ? (
-        'Log In with Email'
-      ) : (
-        'Create Account with Email'
-      )}
-    </Button>
-  )
-}
-
-function GitHubButton() {
-  const { pending } = useFormStatus()
-
-  return (
-    <Button
-      variant="outline"
-      className="flex h-10 w-full text-sm"
-      onClick={async () => {
-        await GitHubSignIn()
-      }}
-    >
-      {pending ? (
-        <Icons.spinner className="size-5 animate-spin" />
-      ) : (
-        <Icons.github className="size-5" />
-      )}
-    </Button>
-  )
-}
-
-function GoogleButton() {
-  const { pending } = useFormStatus()
-
-  return (
-    <Button
-      variant="outline"
-      className="flex h-10 w-full text-sm"
-      onClick={async () => {
-        toast.error('Google Sign In is not implemented yet')
-      }}
-    >
-      {pending ? (
-        <Icons.spinner className="size-5 animate-spin" />
-      ) : (
-        <Icons.google className="size-5" />
-      )}
-    </Button>
   )
 }

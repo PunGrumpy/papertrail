@@ -24,8 +24,7 @@ export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
 
   const name = user?.name ?? 'User'
   const email = user?.email ?? 'user@example.com'
-  const image =
-    user?.image ?? `https://www.gravatar.com/avatar/${email}?d=identicon`
+  const image = user?.image ?? 'user-avatar'
 
   const avatarFallback = name.charAt(0)
 

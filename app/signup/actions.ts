@@ -12,7 +12,9 @@ import { getUser } from '../login/actions'
 export async function createUser(
   email: string,
   hashedPassword: string,
-  salt: string
+  salt: string,
+  givenName: string,
+  familyName: string
 ) {
   const existingUser = await getUser(email)
 
@@ -26,7 +28,9 @@ export async function createUser(
       id: crypto.randomUUID(),
       email,
       password: hashedPassword,
-      salt
+      salt,
+      name: `${givenName} ${familyName}`,
+      image: `https://www.gravatar.com/avatar/${email}?d=identicon`
     }
 
     await redis.hset(`user:${email}`, user)
@@ -49,15 +53,21 @@ export async function signup(
 ): Promise<Result | undefined> {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
+  const givenName = formData.get('givenName') as string
+  const familyName = formData.get('familyName') as string
 
   const parsedCredentials = z
     .object({
       email: z.string().email(),
-      password: z.string().min(6)
+      password: z.string().min(6),
+      givenName: z.string().min(1),
+      familyName: z.string().min(1)
     })
     .safeParse({
       email,
-      password
+      password,
+      givenName,
+      familyName
     })
 
   if (parsedCredentials.success) {
@@ -72,7 +82,13 @@ export async function signup(
     const hashedPassword = getStringFromBuffer(hashedPasswordBuffer)
 
     try {
-      const result = await createUser(email, hashedPassword, salt)
+      const result = await createUser(
+        email,
+        hashedPassword,
+        salt,
+        givenName,
+        familyName
+      )
 
       if (result.resultCode === ResultCode.UserCreated) {
         await signIn('credentials', {
