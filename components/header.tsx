@@ -25,7 +25,7 @@ export async function Header() {
             <CommandMenu />
           </div>
           <nav className="flex items-center space-x-2">
-            <div className="hidden items-center md:flex">
+            <div className="items-center md:flex">
               <Link
                 href={siteConfig.links.github}
                 target="_blank"
@@ -48,18 +48,22 @@ export async function Header() {
             <div className="flex items-center space-x-2">
               {!session ? (
                 <>
-                  <Link
-                    href="/login"
-                    className={cn(buttonVariants({ variant: 'outline' }))}
-                  >
-                    Log in
-                  </Link>
+                  <div className="hidden md:flex">
+                    <Link
+                      href="/login"
+                      className={cn(buttonVariants({ variant: 'outline' }))}
+                    >
+                      Log in
+                    </Link>
+                  </div>
                   <Link href="/signup" className={cn(buttonVariants())}>
                     Sign up
                   </Link>
                 </>
               ) : (
-                <DropdownMenuClient session={session} />
+                <>
+                  <DropdownMenuClient session={session} />
+                </>
               )}
             </div>
           </nav>
