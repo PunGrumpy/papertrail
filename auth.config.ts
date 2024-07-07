@@ -9,8 +9,8 @@ export const authConfig = {
   callbacks: {
     async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
-      const isOnLoginPage = nextUrl.pathname.startsWith('/login')
-      const isOnSignupPage = nextUrl.pathname.startsWith('/signup')
+      const isOnLoginPage = nextUrl.pathname.startsWith('/sign-in')
+      const isOnSignupPage = nextUrl.pathname.startsWith('/sign-up')
 
       if (isLoggedIn) {
         if (isOnLoginPage || isOnSignupPage) {

@@ -6,10 +6,10 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 
-import { CommandMenu } from './command-menu'
-import { DropdownMenuClient } from './dropdown-menu'
-import { MainNav } from './main-nav'
-import { MobileNav } from './mobile-nav'
+import { CommandMenu } from './menu/command-menu'
+import { DropdownMenuClient } from './menu/dropdown-menu'
+import { MainNav } from './nav/main-nav'
+import { MobileNav } from './nav/mobile-nav'
 import { ThemeToggle } from './theme-toggle'
 
 export async function Header() {
@@ -50,7 +50,7 @@ export async function Header() {
                 <>
                   <div className="hidden md:flex">
                     <Link
-                      href="/login"
+                      href="/sign-in"
                       className={cn(buttonVariants({ variant: 'outline' }))}
                     >
                       Log in

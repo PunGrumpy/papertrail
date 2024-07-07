@@ -4,7 +4,7 @@ import { ExitIcon } from '@radix-ui/react-icons'
 import { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger
-} from './ui/dropdown-menu'
+} from '../ui/dropdown-menu'
 
 interface DropdownMenuClientProps {
   session: Session

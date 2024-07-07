@@ -1,4 +1,4 @@
-import { DocsSidebarNav } from '@/components/sidebar-nav'
+import { DocsSidebarNav } from '@/components/nav/sidebar-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { docsConfig } from '@/config/docs'
 

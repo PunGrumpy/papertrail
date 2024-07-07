@@ -3,7 +3,7 @@ import Credentials from 'next-auth/providers/credentials'
 import GitHub from 'next-auth/providers/github'
 import { z } from 'zod'
 
-import { getUser } from './app/login/actions'
+import { getUser } from './app/(auth)/sign-in/actions'
 import { authConfig } from './auth.config'
 import { getStringFromBuffer } from './lib/utils'
 

@@ -3,11 +3,10 @@
 import { AuthError } from 'next-auth'
 import { z } from 'zod'
 
+import { getUser } from '@/app/(auth)/sign-in/actions'
 import { signIn } from '@/auth'
 import { redis } from '@/lib/db'
 import { getStringFromBuffer, ResultCode } from '@/lib/utils'
-
-import { getUser } from '../login/actions'
 
 export async function createUser(
   email: string,

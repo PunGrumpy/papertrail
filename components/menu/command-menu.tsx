@@ -9,7 +9,7 @@ import * as React from 'react'
 import { docsConfig } from '@/config/docs'
 import { cn } from '@/lib/utils'
 
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 import {
   CommandDialog,
   CommandEmpty,
@@ -17,7 +17,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList
-} from './ui/command'
+} from '../ui/command'
 
 export function CommandMenu({ ...props }: AlertDialogProps) {
   const router = useRouter()
