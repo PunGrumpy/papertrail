@@ -3,7 +3,6 @@ import './globals.css'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
-import { SessionProvider } from 'next-auth/react'
 
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
@@ -110,13 +109,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider>
-            <div className="flex h-screen flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-          </SessionProvider>
+          <div className="flex h-screen flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
