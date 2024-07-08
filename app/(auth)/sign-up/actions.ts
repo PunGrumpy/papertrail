@@ -1,128 +1,59 @@
 'use server'
 
-import { AuthError } from 'next-auth'
-import { z } from 'zod'
+import { ID } from 'node-appwrite'
 
-import { getUser } from '@/app/(auth)/sign-in/actions'
-import { signIn } from '@/auth'
-import { redis } from '@/lib/db'
-import { getStringFromBuffer, ResultCode } from '@/lib/utils'
+import { createAdminClient } from '@/lib/appwrite/server'
+import { ResultCode } from '@/lib/utils'
+import { SignUpSchema } from '@/lib/validations'
+import { Result } from '@/types/auth'
+import { NewUser } from '@/types/user'
 
-export async function createUser(
-  email: string,
-  hashedPassword: string,
-  salt: string,
-  givenName: string,
-  familyName: string
-) {
-  const existingUser = await getUser(email)
+import { signinWithEmail } from '../sign-in/actions'
 
-  if (existingUser) {
-    return {
-      type: 'error',
-      resultCode: ResultCode.UserAlreadyExists
-    }
-  } else {
-    const user = {
-      id: crypto.randomUUID(),
-      email,
-      password: hashedPassword,
-      salt,
-      name: `${givenName} ${familyName}`,
-      image: `https://www.gravatar.com/avatar/${email}?d=identicon`
-    }
+export async function createUser(data: FormData): Promise<Result> {
+  const userData: NewUser = {
+    firstName: data.get('firstName') as string,
+    lastName: data.get('lastName') as string,
+    email: data.get('email') as string,
+    password: data.get('password') as string
+  }
 
-    await redis.hset(`user:${email}`, user)
+  const { account } = await createAdminClient()
+  await account.create(
+    ID.unique(),
+    userData.email,
+    userData.password,
+    `${userData.firstName} ${userData.lastName}`
+  )
 
-    return {
-      type: 'success',
-      resultCode: ResultCode.UserCreated
-    }
+  return {
+    type: 'success',
+    resultCode: ResultCode.UserCreated
   }
 }
 
-interface Result {
-  type: string
-  resultCode: ResultCode
-}
+export async function signupWithEmail(data: FormData) {
+  const userData: NewUser = {
+    firstName: data.get('firstName') as string,
+    lastName: data.get('lastName') as string,
+    email: data.get('email') as string,
+    password: data.get('password') as string
+  }
 
-export async function signup(
-  _prevState: Result | undefined,
-  formData: FormData
-): Promise<Result | undefined> {
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-  const givenName = formData.get('givenName') as string
-  const familyName = formData.get('familyName') as string
-
-  const parsedCredentials = z
-    .object({
-      email: z.string().email(),
-      password: z.string().min(6),
-      givenName: z.string().min(1),
-      familyName: z.string().min(1)
-    })
-    .safeParse({
-      email,
-      password,
-      givenName,
-      familyName
-    })
+  const parsedCredentials = SignUpSchema.safeParse(userData)
 
   if (parsedCredentials.success) {
-    const salt = crypto.randomUUID()
-
-    const encoder = new TextEncoder()
-    const saltedPassword = encoder.encode(password + salt)
-    const hashedPasswordBuffer = await crypto.subtle.digest(
-      'SHA-256',
-      saltedPassword
-    )
-    const hashedPassword = getStringFromBuffer(hashedPasswordBuffer)
-
     try {
-      const result = await createUser(
-        email,
-        hashedPassword,
-        salt,
-        givenName,
-        familyName
-      )
-
+      const result = await createUser(data)
       if (result.resultCode === ResultCode.UserCreated) {
-        await signIn('credentials', {
-          email,
-          password,
-          redirect: false
-        })
+        await signinWithEmail(data)
       }
-
       return result
     } catch (error) {
-      if (error instanceof AuthError) {
-        switch (error.type) {
-          case 'CredentialsSignin':
-            return {
-              type: 'error',
-              resultCode: ResultCode.InvalidCredentials
-            }
-          default:
-            return {
-              type: 'error',
-              resultCode: ResultCode.UnknownError
-            }
-        }
-      } else {
-        return {
-          type: 'error',
-          resultCode: ResultCode.UnknownError
-        }
+      return {
+        type: 'error',
+        resultCode: ResultCode.UnknownError
       }
-    }
-  } else {
-    return {
-      type: 'error',
-      resultCode: ResultCode.InvalidCredentials
     }
   }
 }

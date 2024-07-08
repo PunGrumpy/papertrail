@@ -1,76 +1,43 @@
 'use server'
 
-import { AuthError } from 'next-auth'
-import { z } from 'zod'
+import { cookies } from 'next/headers'
 
-import { signIn } from '@/auth'
-import { redis } from '@/lib/db'
+import { setCookie } from '@/app/actions'
+import { createAdminClient } from '@/lib/appwrite/server'
+import { SESSION_COOKIE } from '@/lib/const'
 import { ResultCode } from '@/lib/utils'
-import { User } from '@/types/user'
+import { SignInSchema } from '@/lib/validations'
+import { Result } from '@/types/auth'
+import { LoginUser } from '@/types/user'
 
-export async function getUser(email: string) {
-  const user = await redis.hgetall<User>(`user:${email}`)
-  return user
-}
+export async function signinWithEmail(data: FormData): Promise<Result> {
+  const userData: LoginUser = {
+    email: data.get('email') as string,
+    password: data.get('password') as string
+  }
 
-interface Result {
-  type: string
-  resultCode: ResultCode
-}
+  const parsedCredentials = SignInSchema.safeParse(userData)
 
-export async function authenticate(
-  _prevState: Result | undefined,
-  formData: FormData
-): Promise<Result | undefined> {
-  try {
-    const email = formData.get('email')
-    const password = formData.get('password')
+  if (parsedCredentials.success) {
+    const { account } = await createAdminClient()
+    const session = await account.createEmailPasswordSession(
+      userData.email,
+      userData.password
+    )
 
-    const parsedCredentials = z
-      .object({
-        email: z.string().email(),
-        password: z.string().min(6)
-      })
-      .safeParse({
-        email,
-        password
-      })
+    setCookie({
+      name: SESSION_COOKIE,
+      value: session.secret
+    })
 
-    if (parsedCredentials.success) {
-      await signIn('credentials', {
-        email,
-        password,
-        redirect: false
-      })
-
-      return {
-        type: 'success',
-        resultCode: ResultCode.UserLoggedIn
-      }
-    } else {
-      return {
-        type: 'error',
-        resultCode: ResultCode.InvalidCredentials
-      }
+    return {
+      type: 'success',
+      resultCode: ResultCode.UserLoggedIn
     }
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return {
-            type: 'error',
-            resultCode: ResultCode.InvalidCredentials
-          }
-        default:
-          return {
-            type: 'error',
-            resultCode: ResultCode.UnknownError
-          }
-      }
+  } else {
+    return {
+      type: 'error',
+      resultCode: ResultCode.InvalidCredentials
     }
   }
-}
-
-export async function GitHubSignIn() {
-  await signIn('github')
 }

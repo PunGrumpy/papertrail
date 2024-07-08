@@ -3,15 +3,17 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { authenticate, GitHubSignIn } from '@/app/(auth)/sign-in/actions'
-import { signup } from '@/app/(auth)/sign-up/actions'
+import { signinWithEmail } from '@/app/(auth)/sign-in/actions'
+import { signupWithEmail } from '@/app/(auth)/sign-up/actions'
+import { signUpWithGithub } from '@/lib/appwrite/oauth'
 import { getMessageFromCode } from '@/lib/utils'
+import { SignInSchema, SignUpSchema } from '@/lib/validations'
+import { NewUser } from '@/types/user'
 
 import { Icons } from '../icons'
 import { Button } from '../ui/button'
@@ -22,7 +24,14 @@ import {
   CardHeader,
   CardTitle
 } from '../ui/card'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '../ui/form'
 import { Input } from '../ui/input'
 import { Separator } from '../ui/separator'
 
@@ -32,84 +41,48 @@ interface AuthFormProps {
 
 interface ButtonProps {
   text?: string
-  isDisable?: boolean
-}
-
-function authFormSchema(type: AuthFormProps['type']) {
-  const isSignin = type === 'sign-in'
-
-  return z.object({
-    email: z.string().email(),
-    password: z.string().min(6, {
-      message: 'Password must be at least 6 characters long'
-    }),
-    givenName: isSignin
-      ? z.string().optional()
-      : z.string().min(1, {
-          message: 'First name is required'
-        }),
-    familyName: isSignin
-      ? z.string().optional()
-      : z.string().min(1, {
-          message: 'Last name is required'
-        })
-  })
+  pending: boolean
 }
 
 function getTypeData(type: AuthFormProps['type']) {
   return type === 'sign-in'
     ? {
-        formSchema: authFormSchema(type),
+        formSchema: SignInSchema,
         defaultValues: {
           email: '',
           password: ''
         },
-        title: 'Sign in to your account',
-        description: "Welcome back! We're so excited to see you again!",
-        buttonText: 'Sign In',
+        title: 'Login to your account',
+        description: "Welcome back! We're so excited after seeing you again!",
+        buttonText: 'Login',
         link: {
           text: "Don't have an account?",
           href: '/sign-up',
-          linkText: 'Register here'
+          label: 'Sign up'
         }
       }
     : {
-        formSchema: authFormSchema(type),
+        formSchema: SignUpSchema,
         defaultValues: {
+          firstName: '',
+          lastName: '',
           email: '',
-          password: '',
-          givenName: '',
-          familyName: ''
+          password: ''
         },
-        title: 'Register for an Account',
-        description: "Let's get you all set up! Enter your details below",
-        buttonText: 'Sign Up',
+        title: 'Create an account',
+        description:
+          "Let's get you started! Sign up now and enjoy our services!",
+        buttonText: 'Sign up',
         link: {
           text: 'Already have an account?',
           href: '/sign-in',
-          linkText: 'Log in here'
+          label: 'Login'
         }
       }
 }
 
-export default function AuthForm({ type }: AuthFormProps) {
+export function AuthForm({ type }: AuthFormProps) {
   const router = useRouter()
-  const [result, dispatch] = useFormState(
-    type === 'sign-in' ? authenticate : signup,
-    undefined
-  )
-
-  useEffect(() => {
-    if (result) {
-      if (result.type === 'error') {
-        toast.error(getMessageFromCode(result.resultCode))
-      } else {
-        toast.success(getMessageFromCode(result.resultCode))
-        router.refresh()
-      }
-    }
-  }, [result, router])
-
   const { formSchema, defaultValues, title, description, buttonText, link } =
     getTypeData(type)
 
@@ -118,34 +91,41 @@ export default function AuthForm({ type }: AuthFormProps) {
     defaultValues
   })
 
+  const [isPending, setIsPending] = useState(false)
+
   const onSubmit = form.handleSubmit(async data => {
+    setIsPending(true)
     try {
-      if (type === 'sign-in') {
-        const formData = new FormData()
-        formData.append('email', data.email)
-        formData.append('password', data.password)
-        dispatch(formData)
+      const formData = new FormData()
+      formData.append('email', data.email)
+      formData.append('password', data.password)
+      if (type === 'sign-up') {
+        formData.append('firstName', (data as NewUser).firstName)
+        formData.append('lastName', (data as NewUser).lastName)
       }
 
-      if (type === 'sign-up') {
-        const formData = new FormData()
-        formData.append('email', data.email)
-        formData.append('password', data.password)
-        formData.append('givenName', data.givenName || '')
-        formData.append('familyName', data.familyName || '')
-        dispatch(formData)
+      const result = await (type === 'sign-in'
+        ? signinWithEmail(formData)
+        : signupWithEmail(formData))
+
+      if (result?.type === 'error') {
+        toast.error(getMessageFromCode(result.resultCode))
+      } else {
+        toast.success(getMessageFromCode(result?.resultCode ?? ''))
+        router.push('/docs')
+        form.reset()
       }
     } catch (error) {
-      if (result) {
-        toast.error(getMessageFromCode(result.resultCode))
-      }
+      toast.error('An unexpected error occurred')
+    } finally {
+      setIsPending(false)
     }
   })
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-xl">{title}</CardTitle>
+        <CardTitle className="text-2xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -154,7 +134,7 @@ export default function AuthForm({ type }: AuthFormProps) {
             {type === 'sign-up' && (
               <div className="grid grid-cols-2 gap-4">
                 <FormField
-                  name="givenName"
+                  name="firstName"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -162,16 +142,19 @@ export default function AuthForm({ type }: AuthFormProps) {
                       <FormControl>
                         <Input
                           {...field}
+                          placeholder="Paper"
                           type="text"
-                          name="First Name"
-                          placeholder="Peter"
+                          autoCapitalize="words"
+                          autoComplete="given-name"
+                          autoCorrect="off"
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
-                  name="familyName"
+                  name="lastName"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -179,11 +162,14 @@ export default function AuthForm({ type }: AuthFormProps) {
                       <FormControl>
                         <Input
                           {...field}
+                          placeholder="Trail"
                           type="text"
-                          name="Last Name"
-                          placeholder="Parker"
+                          autoCapitalize="words"
+                          autoComplete="family-name"
+                          autoCorrect="off"
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -198,11 +184,14 @@ export default function AuthForm({ type }: AuthFormProps) {
                   <FormControl>
                     <Input
                       {...field}
-                      type="email"
-                      name="Email"
                       placeholder="p@example.com"
+                      type="email"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      autoCorrect="off"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -213,29 +202,31 @@ export default function AuthForm({ type }: AuthFormProps) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" name="Password" />
+                    <Input
+                      {...field}
+                      type="password"
+                      autoComplete="current-password"
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-            <AuthButton
-              text={buttonText}
-              isDisable={form.formState.isSubmitting}
-            />
+            <AuthButton pending={isPending} text={buttonText} />
           </form>
         </Form>
         <Separator />
         <div className="mt-4 flex flex-row gap-2">
-          <GitHubButton isDisable={form.formState.isSubmitting} />
-          <GoogleButton isDisable={form.formState.isSubmitting} />
+          <GitHubButton pending={isPending} />
         </div>
         <div className="mt-4 text-center text-sm text-muted-foreground">
           {link.text}{' '}
           <Link
             href={link.href}
+            passHref
             className="hover:text-foreground hover:underline"
           >
-            {link.linkText}
+            {link.label}
           </Link>
         </div>
       </CardContent>
@@ -243,60 +234,36 @@ export default function AuthForm({ type }: AuthFormProps) {
   )
 }
 
-function AuthButton({ text, isDisable }: ButtonProps) {
-  const { pending } = useFormStatus()
-
+function AuthButton({ pending, text }: ButtonProps) {
   return (
     <Button
       className="my-4 flex h-10 w-full text-sm"
       aria-disabled={pending}
-      disabled={isDisable}
+      disabled={pending}
     >
       {pending ? <Icons.spinner className="size-6 animate-spin" /> : text}
     </Button>
   )
 }
 
-function GitHubButton({ isDisable }: ButtonProps) {
-  const { pending } = useFormStatus()
-
+function GitHubButton({ pending }: ButtonProps) {
   return (
     <Button
       variant="outline"
-      className="flex h-10 w-full text-sm"
+      className="flex h-10 w-full items-center justify-center text-sm"
       aria-disabled={pending}
+      disabled={pending}
       onClick={async () => {
-        await GitHubSignIn()
+        await signUpWithGithub()
       }}
-      disabled={isDisable}
     >
       {pending ? (
-        <Icons.spinner className="size-5 animate-spin" />
+        <Icons.spinner className="size-6 animate-spin" />
       ) : (
-        <Icons.github className="size-5" />
-      )}
-    </Button>
-  )
-}
-
-function GoogleButton({ isDisable }: ButtonProps) {
-  const { pending } = useFormStatus()
-
-  return (
-    <Button
-      variant="outline"
-      className="flex h-10 w-full text-sm"
-      aria-disabled={pending}
-      onClick={async () => {
-        // await GoogleSignIn()
-        toast.error('Google Sign In is not yet implemented')
-      }}
-      disabled={isDisable}
-    >
-      {pending ? (
-        <Icons.spinner className="size-5 animate-spin" />
-      ) : (
-        <Icons.google className="size-5" />
+        <>
+          <Icons.github className="mr-2 size-4" />
+          Continue with GitHub
+        </>
       )}
     </Button>
   )

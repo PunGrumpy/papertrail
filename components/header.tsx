@@ -1,9 +1,9 @@
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 
-import { auth } from '@/auth'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
+import { getLoggedInUser } from '@/lib/appwrite/server'
 import { cn } from '@/lib/utils'
 
 import { CommandMenu } from './menu/command-menu'
@@ -13,7 +13,7 @@ import { MobileNav } from './nav/mobile-nav'
 import { ThemeToggle } from './theme-toggle'
 
 export async function Header() {
-  const session = await auth()
+  const isLoggedIn = await getLoggedInUser()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -46,7 +46,7 @@ export async function Header() {
               <ThemeToggle />
             </div>
             <div className="flex items-center space-x-2">
-              {!session ? (
+              {!isLoggedIn ? (
                 <>
                   <div className="hidden md:flex">
                     <Link
@@ -56,13 +56,13 @@ export async function Header() {
                       Log in
                     </Link>
                   </div>
-                  <Link href="/signup" className={cn(buttonVariants())}>
+                  <Link href="/sign-up" className={cn(buttonVariants())}>
                     Sign up
                   </Link>
                 </>
               ) : (
                 <>
-                  <DropdownMenuClient session={session} />
+                  <DropdownMenuClient session={isLoggedIn} />
                 </>
               )}
             </div>

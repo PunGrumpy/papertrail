@@ -1,8 +1,10 @@
 'use client'
 
 import { ExitIcon } from '@radix-ui/react-icons'
-import { Session } from 'next-auth'
-import { signOut } from 'next-auth/react'
+import { Models } from 'node-appwrite'
+import { toast } from 'sonner'
+
+import { signout } from '@/app/(auth)/sign-out/actions'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
@@ -16,15 +18,15 @@ import {
 } from '../ui/dropdown-menu'
 
 interface DropdownMenuClientProps {
-  session: Session
+  session: Models.User<Models.Preferences> | null
 }
 
 export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
-  const user = session?.user
+  const user = session
 
   const name = user?.name ?? 'User'
   const email = user?.email ?? 'user@example.com'
-  const image = user?.image ?? 'user-avatar'
+  const avatar = 'https://avatar.tobi.sh/' + name
 
   const avatarFallback = name.charAt(0)
 
@@ -32,7 +34,7 @@ export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar title="User avatar" className="size-8 cursor-pointer">
-          <AvatarImage src={image} alt={name} />
+          <AvatarImage src={avatar} alt={name} />
           <AvatarFallback>{avatarFallback}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -48,7 +50,8 @@ export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={async () => {
-            await signOut()
+            await signout()
+            toast.success('You have been signed out')
           }}
           className="cursor-pointer"
         >
