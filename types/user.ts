@@ -1,11 +1,30 @@
-export interface AuthResult {
-  type: string
-  message: string
-}
-
-export interface User extends Record<string, any> {
+export interface User {
   id: string
+  firstName: string
+  lastName: string
   email: string
   password: string
-  salt: string
+  avatar: string | URL
+  bio: string
+}
+
+export interface NewUser {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+}
+
+export interface LoginUser {
+  email: string
+  password: string
+}
+
+export interface UpdateUser {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  avatar: string | URL
+  bio: string
 }

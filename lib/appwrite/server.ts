@@ -1,37 +1,35 @@
 'use server'
 
-import { cookies } from 'next/headers'
-import { Account, Client } from 'node-appwrite'
+import { Account, Avatars, Client, Databases } from 'node-appwrite'
 
-export async function createSessionClient() {
-  const client = new Client()
+import { getCookie } from '@/app/actions'
+
+import { SESSION_COOKIE } from '../const'
+
+function createClient() {
+  return new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
+}
 
-  const session = cookies().get('appwrite-session')
+export async function createSessionClient() {
+  const session = await getCookie(SESSION_COOKIE)
   if (!session || !session.value) {
     throw new Error('No session found')
   }
 
-  client.setSession(session.value)
+  const client = createClient().setSession(session.value)
 
   return {
-    get account() {
-      return new Account(client)
-    }
+    account: new Account(client)
   }
 }
 
 export async function createAdminClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-    .setKey(process.env.APPWRITE_API_KEY!)
+  const client = createClient().setKey(process.env.NEXT_APPWRITE_KEY!)
 
   return {
-    get account() {
-      return new Account(client)
-    }
+    account: new Account(client)
   }
 }
 
@@ -41,5 +39,19 @@ export async function getLoggedInUser() {
     return await account.get()
   } catch (error) {
     return null
+  }
+}
+
+export async function createAvatar() {
+  const client = createClient()
+  return {
+    avatar: new Avatars(client)
+  }
+}
+
+export async function createDatabase() {
+  const client = createClient()
+  return {
+    database: new Databases(client)
   }
 }
