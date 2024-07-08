@@ -10,7 +10,7 @@ import { z } from 'zod'
 
 import { signinWithEmail } from '@/app/(auth)/sign-in/actions'
 import { signupWithEmail } from '@/app/(auth)/sign-up/actions'
-import { signUpWithGithub } from '@/lib/appwrite/oauth'
+import { signUpWithDiscord, signUpWithGithub } from '@/lib/appwrite/oauth'
 import { getMessageFromCode } from '@/lib/utils'
 import { SignInSchema, SignUpSchema } from '@/lib/validations'
 import { NewUser } from '@/types/user'
@@ -214,11 +214,12 @@ export function AuthForm({ type }: AuthFormProps) {
             />
             <AuthButton pending={isPending} text={buttonText} />
           </form>
+          <Separator className="my-6" />
+          <div className="grid grid-cols-2 gap-4">
+            <GitHubButton pending={isPending} />
+            <DiscordButton pending={isPending} />
+          </div>
         </Form>
-        <Separator />
-        <div className="mt-4 flex flex-row gap-2">
-          <GitHubButton pending={isPending} />
-        </div>
         <div className="mt-4 text-center text-sm text-muted-foreground">
           {link.text}{' '}
           <Link
@@ -227,6 +228,17 @@ export function AuthForm({ type }: AuthFormProps) {
             className="hover:text-foreground hover:underline"
           >
             {link.label}
+          </Link>
+        </div>
+        <div className="mt-4 text-center text-sm text-muted-foreground">
+          Powered by{' '}
+          <Link
+            href="https://appwrite.io/"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-foreground hover:underline"
+          >
+            Appwrite
           </Link>
         </div>
       </CardContent>
@@ -262,7 +274,28 @@ function GitHubButton({ pending }: ButtonProps) {
       ) : (
         <>
           <Icons.github className="mr-2 size-4" />
-          Continue with GitHub
+        </>
+      )}
+    </Button>
+  )
+}
+
+function DiscordButton({ pending }: ButtonProps) {
+  return (
+    <Button
+      variant="outline"
+      className="flex h-10 w-full items-center justify-center text-sm"
+      aria-disabled={pending}
+      disabled={pending}
+      onClick={async () => {
+        await signUpWithDiscord()
+      }}
+    >
+      {pending ? (
+        <Icons.spinner className="size-6 animate-spin" />
+      ) : (
+        <>
+          <Icons.discord className="mr-2 size-4" />
         </>
       )}
     </Button>
