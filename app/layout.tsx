@@ -19,6 +19,9 @@ export const viewport = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: process.env.VERCEL_URL
+    ? new URL(`https://${process.env.VERCEL_URL}`)
+    : new URL('http://localhost:3000'),
   title: siteConfig.name,
   description: siteConfig.description,
   robots: 'follow, index',
