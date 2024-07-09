@@ -8,7 +8,7 @@ import { SignUpSchema } from '@/lib/validations'
 import { Result } from '@/types/auth'
 import { NewUser } from '@/types/user'
 
-import { signinWithEmail } from '../sign-in/actions'
+import { signinWithEmail } from '../signin/actions'
 
 export async function createUser(data: FormData): Promise<Result> {
   const userData: NewUser = {

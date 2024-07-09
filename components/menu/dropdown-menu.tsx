@@ -4,7 +4,7 @@ import { ExitIcon } from '@radix-ui/react-icons'
 import { Models } from 'node-appwrite'
 import { toast } from 'sonner'
 
-import { signout } from '@/app/(auth)/sign-out/actions'
+import { signout } from '@/app/(auth)/signout/actions'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {

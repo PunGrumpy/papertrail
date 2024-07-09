@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { signinWithEmail } from '@/app/(auth)/sign-in/actions'
+import { signinWithEmail } from '@/app/(auth)/signin/actions'
 import { signupWithEmail } from '@/app/(auth)/sign-up/actions'
 import { signUpWithDiscord, signUpWithGithub } from '@/lib/appwrite/oauth'
 import { getMessageFromCode } from '@/lib/utils'
