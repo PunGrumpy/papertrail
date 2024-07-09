@@ -33,7 +33,6 @@ import {
   FormMessage
 } from '../ui/form'
 import { Input } from '../ui/input'
-import { Separator } from '../ui/separator'
 
 interface AuthFormProps {
   type: 'signin' | 'signup'
@@ -214,7 +213,6 @@ export function AuthForm({ type }: AuthFormProps) {
             />
             <AuthButton pending={isPending} text={buttonText} />
           </form>
-          <Separator className="my-6" />
           <div className="grid grid-cols-2 gap-4">
             <GitHubButton pending={isPending} />
             <DiscordButton pending={isPending} />
