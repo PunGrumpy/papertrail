@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       value: session.secret
     })
 
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/docs', request.url))
   } catch (error) {
     console.error('Error in OAuth callback:', error)
     return NextResponse.json(
