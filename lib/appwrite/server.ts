@@ -1,6 +1,6 @@
 'use server'
 
-import { Account, Avatars, Client, Databases } from 'node-appwrite'
+import { Account, Client, Databases } from 'node-appwrite'
 
 import { getCookie } from '@/app/actions'
 
@@ -30,7 +30,6 @@ export async function createAdminClient() {
 
   return {
     account: new Account(client),
-    avatar: new Avatars(client),
     database: new Databases(client)
   }
 }
