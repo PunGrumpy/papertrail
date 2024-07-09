@@ -29,7 +29,9 @@ export async function createAdminClient() {
   const client = createClient().setKey(process.env.NEXT_APPWRITE_KEY!)
 
   return {
-    account: new Account(client)
+    account: new Account(client),
+    avatar: new Avatars(client),
+    database: new Databases(client)
   }
 }
 
@@ -39,19 +41,5 @@ export async function getLoggedInUser() {
     return await account.get()
   } catch (error) {
     return null
-  }
-}
-
-export async function createAvatar() {
-  const client = createClient()
-  return {
-    avatar: new Avatars(client)
-  }
-}
-
-export async function createDatabase() {
-  const client = createClient()
-  return {
-    database: new Databases(client)
   }
 }
