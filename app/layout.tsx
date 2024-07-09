@@ -114,7 +114,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <div className="flex h-screen flex-col">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex flex-1 items-center justify-center">
+              {children}
+            </main>
             <Footer />
           </div>
         </ThemeProvider>
