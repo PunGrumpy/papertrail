@@ -50,13 +50,13 @@ export async function Header() {
                 <>
                   <div className="hidden md:flex">
                     <Link
-                      href="/sign-in"
+                      href="/signin"
                       className={cn(buttonVariants({ variant: 'outline' }))}
                     >
                       Log in
                     </Link>
                   </div>
-                  <Link href="/sign-up" className={cn(buttonVariants())}>
+                  <Link href="/signup" className={cn(buttonVariants())}>
                     Sign up
                   </Link>
                 </>

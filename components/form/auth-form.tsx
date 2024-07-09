@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { signinWithEmail } from '@/app/(auth)/signin/actions'
-import { signupWithEmail } from '@/app/(auth)/sign-up/actions'
+import { signupWithEmail } from '@/app/(auth)/signup/actions'
 import { signUpWithDiscord, signUpWithGithub } from '@/lib/appwrite/oauth'
 import { getMessageFromCode } from '@/lib/utils'
 import { SignInSchema, SignUpSchema } from '@/lib/validations'
@@ -36,7 +36,7 @@ import { Input } from '../ui/input'
 import { Separator } from '../ui/separator'
 
 interface AuthFormProps {
-  type: 'sign-in' | 'sign-up'
+  type: 'signin' | 'signup'
 }
 
 interface ButtonProps {
@@ -45,7 +45,7 @@ interface ButtonProps {
 }
 
 function getTypeData(type: AuthFormProps['type']) {
-  return type === 'sign-in'
+  return type === 'signin'
     ? {
         formSchema: SignInSchema,
         defaultValues: {
@@ -57,7 +57,7 @@ function getTypeData(type: AuthFormProps['type']) {
         buttonText: 'Login',
         link: {
           text: "Don't have an account?",
-          href: '/sign-up',
+          href: '/signup',
           label: 'Sign up'
         }
       }
@@ -75,7 +75,7 @@ function getTypeData(type: AuthFormProps['type']) {
         buttonText: 'Sign up',
         link: {
           text: 'Already have an account?',
-          href: '/sign-in',
+          href: '/signin',
           label: 'Login'
         }
       }
@@ -99,12 +99,12 @@ export function AuthForm({ type }: AuthFormProps) {
       const formData = new FormData()
       formData.append('email', data.email)
       formData.append('password', data.password)
-      if (type === 'sign-up') {
+      if (type === 'signup') {
         formData.append('firstName', (data as NewUser).firstName)
         formData.append('lastName', (data as NewUser).lastName)
       }
 
-      const result = await (type === 'sign-in'
+      const result = await (type === 'signin'
         ? signinWithEmail(formData)
         : signupWithEmail(formData))
 
@@ -131,7 +131,7 @@ export function AuthForm({ type }: AuthFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={onSubmit} className="grid gap-4">
-            {type === 'sign-up' && (
+            {type === 'signup' && (
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   name="firstName"

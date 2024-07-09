@@ -11,5 +11,5 @@ export async function signout() {
   await deleteCookie(SESSION_COOKIE)
   await account.deleteSession('current')
 
-  redirect('/sign-in')
+  redirect('/signin')
 }
