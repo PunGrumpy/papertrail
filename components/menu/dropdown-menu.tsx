@@ -1,6 +1,7 @@
 'use client'
 
 import { ExitIcon } from '@radix-ui/react-icons'
+import { useRouter } from 'next/navigation'
 import { Models } from 'node-appwrite'
 import { toast } from 'sonner'
 
@@ -22,13 +23,13 @@ interface DropdownMenuClientProps {
 }
 
 export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
-  const user = session
+  const router = useRouter()
 
+  const user = session
   const name = user?.name ?? 'User'
   const email = user?.email ?? 'user@example.com'
   const avatar = 'https://avatar.tobi.sh/' + name
-
-  const avatarFallback = name.charAt(0)
+  const avatarFallback = name.charAt(0).toUpperCase()
 
   return (
     <DropdownMenu>
@@ -47,6 +48,15 @@ export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
             </span>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            router.push('/setting')
+          }}
+        >
+          Settings
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={async () => {
