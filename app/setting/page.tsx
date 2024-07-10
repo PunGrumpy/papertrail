@@ -1,7 +1,11 @@
 import { ProfileForm } from '@/components/form/profile-form'
 import { Separator } from '@/components/ui/separator'
+import { getLoggedInUser, getUserAccount } from '@/lib/appwrite/server'
 
-export default function SettingPage() {
+export default async function SettingPage() {
+  const isLoggedIn = await getLoggedInUser()
+  const account = await getUserAccount(isLoggedIn?.$id || '')
+
   return (
     <div className="space-y-6">
       <div>
@@ -11,7 +15,7 @@ export default function SettingPage() {
         </p>
       </div>
       <Separator />
-      <ProfileForm />
+      <ProfileForm user={account} />
     </div>
   )
 }

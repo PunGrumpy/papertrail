@@ -1,6 +1,6 @@
 'use server'
 
-import { Account, Client, Databases } from 'node-appwrite'
+import { Account, Client, Databases, Users } from 'node-appwrite'
 
 import { getCookie } from '@/app/actions'
 
@@ -30,7 +30,8 @@ export async function createAdminClient() {
 
   return {
     account: new Account(client),
-    database: new Databases(client)
+    database: new Databases(client),
+    user: new Users(client)
   }
 }
 
@@ -38,6 +39,18 @@ export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient()
     return await account.get()
+  } catch (error) {
+    return null
+  }
+}
+
+export async function getUserAccount(userId: string) {
+  try {
+    const { user } = await createAdminClient()
+
+    const userAccount = await user.get(userId)
+
+    return userAccount
   } catch (error) {
     return null
   }

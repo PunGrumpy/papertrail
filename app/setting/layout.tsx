@@ -34,7 +34,7 @@ interface SettingLayoutProps {
 export default async function SettingLayout({ children }: SettingLayoutProps) {
   const isLoggedIn = await getLoggedInUser()
 
-  if (!isLoggedIn) redirect('/signin')
+  // if (!isLoggedIn) redirect('/signin')
 
   return (
     <>
