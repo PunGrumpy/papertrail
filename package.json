@@ -6,7 +6,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "dev:infisical": "infisical run -e prod -- bun dev",
+    "dev:infisical": "infisical run -e dev -- bun dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "next lint && eslint .",
