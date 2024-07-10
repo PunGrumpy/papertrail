@@ -1,5 +1,3 @@
-import { ResultCode } from '@/lib/utils'
-
 export interface AuthResult {
   type: string
   message: string
@@ -7,5 +5,5 @@ export interface AuthResult {
 
 export interface Result {
   type: string
-  resultCode: ResultCode
+  message: string | Error | null | undefined
 }

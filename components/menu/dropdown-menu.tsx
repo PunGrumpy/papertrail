@@ -51,7 +51,7 @@ export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
         <DropdownMenuItem
           onClick={async () => {
             await signout()
-            toast.success('You have been signed out')
+            toast.success('You have been signed out, see you soon!')
           }}
           className="cursor-pointer"
         >

@@ -3,7 +3,6 @@
 import { ID } from 'node-appwrite'
 
 import { createAdminClient } from '@/lib/appwrite/server'
-import { ResultCode } from '@/lib/utils'
 import { SignUpSchema } from '@/lib/validations'
 import { Result } from '@/types/auth'
 import { NewUser } from '@/types/user'
@@ -19,20 +18,27 @@ export async function createUser(data: FormData): Promise<Result> {
   }
 
   const { account } = await createAdminClient()
-  await account.create(
+  const newAccount = await account.create(
     ID.unique(),
     userData.email,
     userData.password,
     `${userData.firstName} ${userData.lastName}`
   )
 
+  if (!newAccount.$id) {
+    return {
+      type: 'error',
+      message: 'User not created, please try again later'
+    }
+  }
+
   return {
     type: 'success',
-    resultCode: ResultCode.UserCreated
+    message: 'User created successfully, welcome!'
   }
 }
 
-export async function signupWithEmail(data: FormData) {
+export async function signupWithEmail(data: FormData): Promise<Result> {
   const userData: NewUser = {
     firstName: data.get('firstName') as string,
     lastName: data.get('lastName') as string,
@@ -45,15 +51,22 @@ export async function signupWithEmail(data: FormData) {
   if (parsedCredentials.success) {
     try {
       const result = await createUser(data)
-      if (result.resultCode === ResultCode.UserCreated) {
+      if (result.type === 'success') {
         await signinWithEmail(data)
       }
       return result
     } catch (error) {
-      return {
-        type: 'error',
-        resultCode: ResultCode.UnknownError
+      if (error instanceof Error) {
+        return {
+          type: 'error',
+          message: error.message
+        }
       }
     }
+  }
+
+  return {
+    type: 'error',
+    message: 'Invalid credentials, please try again'
   }
 }

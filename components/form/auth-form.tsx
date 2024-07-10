@@ -11,7 +11,6 @@ import { z } from 'zod'
 import { signinWithEmail } from '@/app/(auth)/signin/actions'
 import { signupWithEmail } from '@/app/(auth)/signup/actions'
 import { signUpWithDiscord, signUpWithGithub } from '@/lib/appwrite/oauth'
-import { getMessageFromCode } from '@/lib/utils'
 import { SignInSchema, SignUpSchema } from '@/lib/validations'
 import { NewUser } from '@/types/user'
 
@@ -108,14 +107,16 @@ export function AuthForm({ type }: AuthFormProps) {
         : signupWithEmail(formData))
 
       if (result?.type === 'error') {
-        toast.error(getMessageFromCode(result.resultCode))
+        toast.error(String(result.message))
       } else {
-        toast.success(getMessageFromCode(result?.resultCode ?? ''))
+        toast.success(String(result.message))
         router.push('/docs')
         form.reset()
       }
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
     } finally {
       setIsPending(false)
     }
