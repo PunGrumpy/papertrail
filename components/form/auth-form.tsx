@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,13 +16,6 @@ import { NewUser } from '@/types/user'
 import { Icons } from '../icons'
 import { Button } from '../ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '../ui/card'
-import {
   Form,
   FormControl,
   FormField,
@@ -32,7 +24,6 @@ import {
   FormMessage
 } from '../ui/form'
 import { Input } from '../ui/input'
-import { Separator } from '../ui/separator'
 
 interface AuthFormProps {
   type: 'signin' | 'signup'
@@ -51,14 +42,7 @@ function getTypeData(type: AuthFormProps['type']) {
           email: '',
           password: ''
         },
-        title: 'Login to your account',
-        description: "Welcome back! We're so excited after seeing you again!",
-        buttonText: 'Login',
-        link: {
-          text: "Don't have an account?",
-          href: '/signup',
-          label: 'Sign up'
-        }
+        buttonText: 'Login'
       }
     : {
         formSchema: SignUpSchema,
@@ -68,22 +52,13 @@ function getTypeData(type: AuthFormProps['type']) {
           email: '',
           password: ''
         },
-        title: 'Create an account',
-        description:
-          "Let's get you started! Sign up now and enjoy our services!",
-        buttonText: 'Sign up',
-        link: {
-          text: 'Already have an account?',
-          href: '/signin',
-          label: 'Login'
-        }
+        buttonText: 'Sign up'
       }
 }
 
 export function AuthForm({ type }: AuthFormProps) {
   const router = useRouter()
-  const { formSchema, defaultValues, title, description, buttonText, link } =
-    getTypeData(type)
+  const { formSchema, defaultValues, buttonText } = getTypeData(type)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -210,10 +185,20 @@ export function AuthForm({ type }: AuthFormProps) {
                   </FormItem>
                 )}
               />
-              <AuthButton pending={isPending} text={buttonText} />
             </div>
+            <AuthButton pending={isPending} text={buttonText} />
           </div>
         </form>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-4">
           <GitHubButton pending={isPending} />
           <DiscordButton pending={isPending} />
@@ -226,7 +211,7 @@ export function AuthForm({ type }: AuthFormProps) {
 function AuthButton({ pending, text }: ButtonProps) {
   return (
     <Button
-      className="my-4 flex h-10 w-full text-sm"
+      className="flex h-10 w-full text-sm"
       aria-disabled={pending}
       disabled={pending}
     >
@@ -239,7 +224,7 @@ function GitHubButton({ pending }: ButtonProps) {
   return (
     <Button
       variant="outline"
-      className="flex h-10 w-full items-center justify-center text-sm"
+      className="flex h-10 w-full items-center justify-center"
       aria-disabled={pending}
       disabled={pending}
       onClick={async () => {
@@ -250,7 +235,7 @@ function GitHubButton({ pending }: ButtonProps) {
         <Icons.spinner className="size-6 animate-spin" />
       ) : (
         <>
-          <Icons.github className="mr-2 size-4" />
+          <Icons.github className="size-4" />
         </>
       )}
     </Button>
@@ -261,7 +246,7 @@ function DiscordButton({ pending }: ButtonProps) {
   return (
     <Button
       variant="outline"
-      className="flex h-10 w-full items-center justify-center text-sm"
+      className="flex h-10 w-full items-center justify-center"
       aria-disabled={pending}
       disabled={pending}
       onClick={async () => {
@@ -272,7 +257,7 @@ function DiscordButton({ pending }: ButtonProps) {
         <Icons.spinner className="size-6 animate-spin" />
       ) : (
         <>
-          <Icons.discord className="mr-2 size-4" />
+          <Icons.discord className="size-4" />
         </>
       )}
     </Button>
