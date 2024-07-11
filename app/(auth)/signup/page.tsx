@@ -31,7 +31,7 @@ export default async function SignupPage() {
             Create an account
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter your email below to create your account
+            Let&apos;s get you started! Sign up now and enjoy our services!
           </p>
         </div>
         <AuthForm type="signin" />
