@@ -4,8 +4,6 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
 
-import { Footer } from '@/components/footer'
-import { Header } from '@/components/header'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { siteConfig } from '@/config/site'
@@ -22,7 +20,10 @@ export const metadata: Metadata = {
   metadataBase: process.env.VERCEL_URL
     ? new URL(`${process.env.VERCEL_URL}`)
     : undefined,
-  title: siteConfig.name,
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`
+  },
   description: siteConfig.description,
   robots: 'follow, index',
   icons: {
@@ -112,13 +113,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-screen flex-col">
-            <Header />
-            <main className="flex flex-1 items-center justify-center">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
