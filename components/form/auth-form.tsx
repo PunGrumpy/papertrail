@@ -32,6 +32,7 @@ import {
   FormMessage
 } from '../ui/form'
 import { Input } from '../ui/input'
+import { Separator } from '../ui/separator'
 
 interface AuthFormProps {
   type: 'signin' | 'signup'
@@ -123,114 +124,210 @@ export function AuthForm({ type }: AuthFormProps) {
   })
 
   return (
-    <Card className="mx-auto max-w-sm">
-      <CardHeader>
-        <CardTitle className="text-2xl">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={onSubmit} className="grid gap-4">
-            {type === 'signup' && (
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  name="firstName"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Paper"
-                          type="text"
-                          autoCapitalize="words"
-                          autoComplete="given-name"
-                          autoCorrect="off"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="lastName"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Trail"
-                          type="text"
-                          autoCapitalize="words"
-                          autoComplete="family-name"
-                          autoCorrect="off"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="p@example.com"
-                      type="email"
-                      autoCapitalize="none"
-                      autoComplete="email"
-                      autoCorrect="off"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+    // <Card className="mx-auto max-w-sm">
+    //   <CardHeader>
+    //     <CardTitle className="text-2xl">{title}</CardTitle>
+    //     <CardDescription>{description}</CardDescription>
+    //   </CardHeader>
+    //   <CardContent>
+    //     <Form {...form}>
+    //       <form onSubmit={onSubmit} className="grid gap-4">
+    //         {type === 'signup' && (
+    //           <div className="grid grid-cols-2 gap-4">
+    //             <FormField
+    //               name="firstName"
+    //               control={form.control}
+    //               render={({ field }) => (
+    //                 <FormItem>
+    //                   <FormLabel>First Name</FormLabel>
+    //                   <FormControl>
+    //                     <Input
+    //                       {...field}
+    //                       placeholder="Paper"
+    //                       type="text"
+    //                       autoCapitalize="words"
+    //                       autoComplete="given-name"
+    //                       autoCorrect="off"
+    //                     />
+    //                   </FormControl>
+    //                   <FormMessage />
+    //                 </FormItem>
+    //               )}
+    //             />
+    //             <FormField
+    //               name="lastName"
+    //               control={form.control}
+    //               render={({ field }) => (
+    //                 <FormItem>
+    //                   <FormLabel>Last Name</FormLabel>
+    //                   <FormControl>
+    //                     <Input
+    //                       {...field}
+    //                       placeholder="Trail"
+    //                       type="text"
+    //                       autoCapitalize="words"
+    //                       autoComplete="family-name"
+    //                       autoCorrect="off"
+    //                     />
+    //                   </FormControl>
+    //                   <FormMessage />
+    //                 </FormItem>
+    //               )}
+    //             />
+    //           </div>
+    //         )}
+    //         <FormField
+    //           name="email"
+    //           control={form.control}
+    //           render={({ field }) => (
+    //             <FormItem>
+    //               <FormLabel>Email</FormLabel>
+    //               <FormControl>
+    //                 <Input
+    //                   {...field}
+    //                   placeholder="p@example.com"
+    //                   type="email"
+    //                   autoCapitalize="none"
+    //                   autoComplete="email"
+    //                   autoCorrect="off"
+    //                 />
+    //               </FormControl>
+    //               <FormMessage />
+    //             </FormItem>
+    //           )}
+    //         />
+    //         <FormField
+    //           name="password"
+    //           control={form.control}
+    //           render={({ field }) => (
+    //             <FormItem>
+    //               <FormLabel>Password</FormLabel>
+    //               <FormControl>
+    //                 <Input
+    //                   {...field}
+    //                   type="password"
+    //                   autoComplete="current-password"
+    //                 />
+    //               </FormControl>
+    //               <FormMessage />
+    //             </FormItem>
+    //           )}
+    //         />
+    //         <AuthButton pending={isPending} text={buttonText} />
+    //       </form>
+    //       <div className="grid grid-cols-2 gap-4">
+    //         <GitHubButton pending={isPending} />
+    //         <DiscordButton pending={isPending} />
+    //       </div>
+    //     </Form>
+    //     <div className="mt-4 text-center text-sm text-muted-foreground">
+    //       {link.text}{' '}
+    //       <Link
+    //         href={link.href}
+    //         passHref
+    //         className="hover:text-foreground hover:underline"
+    //       >
+    //         {link.label}
+    //       </Link>
+    //     </div>
+    //   </CardContent>
+    // </Card>
+    <div className="grid gap-6">
+      <Form {...form}>
+        <form onSubmit={onSubmit}>
+          <div className="grid gap-2">
+            <div className="grid gap-1">
+              {type === 'signup' && (
+                <div className="grid grid-cols-2 gap-1">
+                  <FormField
+                    name="firstName"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Paper"
+                            type="text"
+                            autoCapitalize="words"
+                            autoComplete="given-name"
+                            autoCorrect="off"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="lastName"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Trail"
+                            type="text"
+                            autoCapitalize="words"
+                            autoComplete="family-name"
+                            autoCorrect="off"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               )}
-            />
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      autoComplete="current-password"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <AuthButton pending={isPending} text={buttonText} />
-          </form>
-          <div className="grid grid-cols-2 gap-4">
-            <GitHubButton pending={isPending} />
-            <DiscordButton pending={isPending} />
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="p@example.com"
+                        type="email"
+                        autoCapitalize="none"
+                        autoComplete="email"
+                        autoCorrect="off"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="password"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="password"
+                        autoComplete="current-password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <AuthButton pending={isPending} text={buttonText} />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <GitHubButton pending={isPending} />
+              <DiscordButton pending={isPending} />
+            </div>
           </div>
-        </Form>
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          {link.text}{' '}
-          <Link
-            href={link.href}
-            passHref
-            className="hover:text-foreground hover:underline"
-          >
-            {link.label}
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+        </form>
+      </Form>
+    </div>
   )
 }
 
