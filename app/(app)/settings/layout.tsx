@@ -7,7 +7,7 @@ import { getLoggedInUser } from '@/lib/appwrite/server'
 const sidebarNavItems = [
   {
     title: 'Profile',
-    href: '/settings/'
+    href: '/settings'
   },
   {
     title: 'Account',
@@ -38,7 +38,7 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
 
   return (
     <>
-      <div className="space-y-6 p-10 pb-16 md:block">
+      <div className="container space-y-6 p-10 pb-16 md:block">
         <div className="space-y-1">
           <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground">
@@ -47,7 +47,7 @@ export default async function SettingLayout({ children }: SettingLayoutProps) {
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <aside className="-mx-4 lg:w-1/5">
+          <aside className="lg:w-1/5">
             <SettingsNav items={sidebarNavItems} />
           </aside>
           <div className="flex-1 lg:max-w-2xl">{children}</div>
