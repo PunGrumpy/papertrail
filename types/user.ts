@@ -4,7 +4,7 @@ export interface User {
   lastName: string
   email: string
   password: string
-  avatar: string | URL
+  avatar: string
   bio: string
 }
 
@@ -25,6 +25,6 @@ export interface UpdateUser {
   lastName: string
   email: string
   password: string
-  avatar: string | URL
+  avatar: string
   bio: string
 }

@@ -17,7 +17,7 @@ export async function createUser(data: FormData): Promise<Result> {
     password: data.get('password') as string
   }
 
-  const { account } = await createAdminClient()
+  const { account, database } = await createAdminClient()
   const newAccount = await account.create(
     ID.unique(),
     userData.email,
@@ -31,6 +31,21 @@ export async function createUser(data: FormData): Promise<Result> {
       message: 'User not created, please try again later'
     }
   }
+
+  await database.createDocument(
+    process.env.APPWRITE_DATABASE_ID!,
+    process.env.APPWRITE_USER_COLLECTION_ID!,
+    ID.unique(),
+    {
+      accountId: newAccount.$id,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      avatar: new URL(
+        `https://api.dicebear.com/9.x/adventurer-neutral/png?seed=${newAccount.name}`
+      )
+    }
+  )
 
   return {
     type: 'success',

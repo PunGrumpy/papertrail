@@ -1,6 +1,6 @@
 'use server'
 
-import { Account, Client, Databases, Users } from 'node-appwrite'
+import { Account, Client, Databases, Query, Users } from 'node-appwrite'
 
 import { getCookie } from '@/app/actions'
 
@@ -44,13 +44,17 @@ export async function getLoggedInUser() {
   }
 }
 
-export async function getUserAccount(userId: string) {
+export async function getUserAccount(accountId: string) {
   try {
-    const { user } = await createAdminClient()
+    const { database } = await createAdminClient()
 
-    const userAccount = await user.get(userId)
+    const userAccount = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_USER_COLLECTION_ID!,
+      [Query.equal('accountId', [accountId])]
+    )
 
-    return userAccount
+    return userAccount.documents[0]
   } catch (error) {
     return null
   }

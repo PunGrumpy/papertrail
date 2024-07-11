@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
-import { getLoggedInUser } from '@/lib/appwrite/server'
+import { getLoggedInUser, getUserAccount } from '@/lib/appwrite/server'
 import { cn } from '@/lib/utils'
 
 import { CommandMenu } from './menu/command-menu'
@@ -14,6 +14,7 @@ import { ThemeToggle } from './theme-toggle'
 
 export async function Header() {
   const isLoggedIn = await getLoggedInUser()
+  const account = await getUserAccount(isLoggedIn?.$id ?? '')
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -62,7 +63,7 @@ export async function Header() {
                 </>
               ) : (
                 <>
-                  <DropdownMenuClient session={isLoggedIn} />
+                  <DropdownMenuClient session={account} />
                 </>
               )}
             </div>
