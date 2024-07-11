@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-import { SettingsNav } from '@/components/nav/settingss-nav'
+import { SettingsNav } from '@/components/nav/settings-nav'
 import { Separator } from '@/components/ui/separator'
 import { getLoggedInUser } from '@/lib/appwrite/server'
 
