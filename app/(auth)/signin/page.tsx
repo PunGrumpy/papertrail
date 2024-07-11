@@ -31,10 +31,10 @@ export default async function SigninPage() {
             Welcome back
           </h1>
           <p className="text-sm text-muted-foreground">
-            Welcome back! We&apos;re so excited after seeing you again!
+            We&apos;re so excited after seeing you again!
           </p>
         </div>
-        <AuthForm type="signup" />
+        <AuthForm type="signin" />
         <div className="mt-4 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{' '}
           <Link
