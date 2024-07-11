@@ -38,9 +38,8 @@ export async function createUser(data: FormData): Promise<Result> {
     ID.unique(),
     {
       accountId: newAccount.$id,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
+      name: newAccount.name,
+      email: newAccount.email,
       avatar: new URL(
         `https://api.dicebear.com/9.x/adventurer-neutral/png?seed=${newAccount.name}`
       )
