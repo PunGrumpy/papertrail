@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/appwrite/server'
 import { SESSION_COOKIE } from '@/lib/const'
 
-import { setCookie } from '../actions'
+import { setCookie } from '../../actions'
 
 export async function GET(request: NextRequest) {
   try {
