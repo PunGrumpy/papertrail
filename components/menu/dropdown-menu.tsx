@@ -52,7 +52,7 @@ export function DropdownMenuClient({ session }: DropdownMenuClientProps) {
         <DropdownMenuItem
           className="cursor-pointer"
           onClick={() => {
-            router.push('/setting')
+            router.push('/settings')
           }}
         >
           Settings

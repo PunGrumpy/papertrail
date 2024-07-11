@@ -1,29 +1,29 @@
 import { redirect } from 'next/navigation'
 
-import { SettingsNav } from '@/components/nav/settings-nav'
+import { SettingsNav } from '@/components/nav/settingss-nav'
 import { Separator } from '@/components/ui/separator'
 import { getLoggedInUser } from '@/lib/appwrite/server'
 
 const sidebarNavItems = [
   {
     title: 'Profile',
-    href: '/setting/'
+    href: '/settings/'
   },
   {
     title: 'Account',
-    href: '/setting/account'
+    href: '/settings/account'
   },
   {
     title: 'Appearance',
-    href: '/setting/appearance'
+    href: '/settings/appearance'
   },
   {
     title: 'Notifications',
-    href: '/setting/notifications'
+    href: '/settings/notifications'
   },
   {
     title: 'Display',
-    href: '/setting/display'
+    href: '/settings/display'
   }
 ]
 
