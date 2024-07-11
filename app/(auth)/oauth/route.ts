@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { ID } from 'node-appwrite'
 
-import { createAdminClient } from '@/lib/appwrite/server'
+import {
+  createAdminClient,
+  getLoggedInUser,
+  getUserAccount
+} from '@/lib/appwrite/server'
 import { SESSION_COOKIE } from '@/lib/const'
 
 import { setCookie } from '../../actions'
@@ -17,7 +22,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const { account } = await createAdminClient()
+    const { account, database } = await createAdminClient()
 
     const session = await account.createSession(userId, secret)
 
@@ -32,6 +37,29 @@ export async function GET(request: NextRequest) {
       name: SESSION_COOKIE,
       value: session.secret
     })
+
+    try {
+      const user = await getLoggedInUser()
+
+      const existingAccount = await getUserAccount(session.userId)
+      if (!existingAccount) {
+        await database.createDocument(
+          process.env.APPWRITE_DATABASE_ID!,
+          process.env.APPWRITE_USER_COLLECTION_ID!,
+          ID.unique(),
+          {
+            accountId: userId,
+            name: user?.name,
+            email: user?.email,
+            avatar: new URL(
+              `https://api.dicebear.com/9.x/adventurer-neutral/png?seed=${user?.name}`
+            )
+          }
+        )
+      }
+    } catch (error) {
+      console.error('Error saving user account:', error)
+    }
 
     return NextResponse.redirect(`${request.nextUrl.origin}/docs`)
   } catch (error) {
