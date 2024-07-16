@@ -7,6 +7,7 @@ import {
   PageHeaderHeading
 } from '@/components/page-header'
 import { buttonVariants } from '@/components/ui/button'
+import GradualSpacing from '@/components/ui/gradual-spacing'
 import ShinyButton from '@/components/ui/shiny-button'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
@@ -15,7 +16,9 @@ export default async function Page() {
   return (
     <div className="container relative">
       <PageHeader>
-        <PageHeaderHeading>A Collection of Personal Projects</PageHeaderHeading>
+        <PageHeaderHeading className="-tracking-widest">
+          <GradualSpacing text="A Collection of Personal Projects" />
+        </PageHeaderHeading>
         <PageHeaderDescription>
           A collection of personal projects that I&apos;ve built over the years.
           These projects range from open-source libraries to full-blown
