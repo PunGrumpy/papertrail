@@ -16,8 +16,12 @@ export default async function Page() {
   return (
     <div className="container relative">
       <PageHeader>
-        <PageHeaderHeading className="-tracking-widest">
-          <GradualSpacing text="A Collection of Personal Projects" />
+        <PageHeaderHeading>
+          <GradualSpacing
+            text="A Collection of Personal Projects"
+            className="hidden -tracking-widest md:block"
+          />
+          <span className="md:hidden">A Collection of Personal Projects</span>
         </PageHeaderHeading>
         <PageHeaderDescription>
           A collection of personal projects that I&apos;ve built over the years.
