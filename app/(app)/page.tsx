@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { Announcement } from '@/components/announcement'
 import {
   PageActions,
   PageHeader,
@@ -16,6 +17,7 @@ export default async function Page() {
   return (
     <div className="container relative">
       <PageHeader>
+        <Announcement />
         <PageHeaderHeading>
           <GradualSpacing
             text="A Collection of Personal Projects"
