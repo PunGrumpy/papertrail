@@ -7,6 +7,7 @@ import {
   PageHeaderHeading
 } from '@/components/page-header'
 import { buttonVariants } from '@/components/ui/button'
+import ShinyButton from '@/components/ui/shiny-button'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 
@@ -14,24 +15,18 @@ export default async function Page() {
   return (
     <div className="container relative">
       <PageHeader>
-        <PageHeaderHeading>
-          A Collection of APIs for Personal Projects
-        </PageHeaderHeading>
+        <PageHeaderHeading>A Collection of Personal Projects</PageHeaderHeading>
         <PageHeaderDescription>
-          APIs for personal projects, open-source initiatives, and more.
-          Papertrail powers cv.pungrumpy.com and other projects.
+          A collection of personal projects that I&apos;ve built over the years.
+          These projects range from open-source libraries to full-blown
+          applications.
         </PageHeaderDescription>
         <PageActions>
           <Link href="/docs" className={cn(buttonVariants())}>
             Get Started
           </Link>
-          <Link
-            href={siteConfig.links.github}
-            target="_blank"
-            rel="noreferrer"
-            className={cn(buttonVariants({ variant: 'outline' }))}
-          >
-            GitHub
+          <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
+            <ShinyButton text="GitHub" />
           </Link>
         </PageActions>
       </PageHeader>

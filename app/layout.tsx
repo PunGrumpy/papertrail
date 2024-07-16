@@ -103,10 +103,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           'font-sans antialiased',
           GeistSans.variable,
           GeistMono.variable,
-          'h-screen'
+          'flex min-h-screen flex-col'
         )}
       >
-        <Toaster position="top-center" containerAriaLabel="Toaster" />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -114,6 +113,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           {children}
+          <Toaster position="top-center" containerAriaLabel="Toaster" />
         </ThemeProvider>
       </body>
     </html>
