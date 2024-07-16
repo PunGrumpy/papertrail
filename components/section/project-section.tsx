@@ -61,7 +61,7 @@ const SkeletonOne = () => {
       >
         <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-pink-500 to-violet-500" />
         <span className="truncate font-mono text-xs">
-          INFO 4ms GET /not-found 404
+          ERROR 4ms GET /not-found 404
         </span>
       </motion.div>
     </motion.div>
