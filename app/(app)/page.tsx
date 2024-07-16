@@ -1,44 +1,10 @@
-import Link from 'next/link'
-
-import { Announcement } from '@/components/announcement'
-import {
-  PageActions,
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading
-} from '@/components/page-header'
-import { buttonVariants } from '@/components/ui/button'
-import GradualSpacing from '@/components/ui/gradual-spacing'
-import ShinyButton from '@/components/ui/shiny-button'
-import { siteConfig } from '@/config/site'
-import { cn } from '@/lib/utils'
+import { HeroSection } from '@/components/section/hero-section'
 
 export default async function Page() {
   return (
-    <div className="container relative">
-      <PageHeader>
-        <Announcement />
-        <PageHeaderHeading>
-          <GradualSpacing
-            text="A Collection of Personal Projects"
-            className="hidden -tracking-widest md:block"
-          />
-          <span className="md:hidden">A Collection of Personal Projects</span>
-        </PageHeaderHeading>
-        <PageHeaderDescription>
-          A collection of personal projects that I&apos;ve built over the years.
-          These projects range from open-source libraries to full-blown
-          applications.
-        </PageHeaderDescription>
-        <PageActions>
-          <Link href="/docs" className={cn(buttonVariants())}>
-            Get Started
-          </Link>
-          <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
-            <ShinyButton text="GitHub" />
-          </Link>
-        </PageActions>
-      </PageHeader>
-    </div>
+    <>
+      <div className="dark:bg-grid-white/[0.06] bg-grid-black/[0.04] pointer-events-none absolute inset-0 select-none [mask-image:linear-gradient(to_bottom,white_5%,transparent_50%)]"></div>
+      <HeroSection />
+    </>
   )
 }

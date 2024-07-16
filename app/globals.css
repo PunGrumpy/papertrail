@@ -33,6 +33,10 @@
     --ring: 240 10% 3.9%;
 
     --radius: 0.5rem;
+
+    --color-one: #ffbd7a;
+    --color-two: #fe8bbb;
+    --color-three: #9e7aff;
   }
 
   .dark {

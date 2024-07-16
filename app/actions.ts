@@ -58,3 +58,9 @@ export async function deleteCookie(name: string): Promise<void> {
   const cookieStore = getCookieStore()
   cookieStore.delete(name)
 }
+
+export async function onScroll(): Promise<boolean> {
+  // check if the user has scrolled
+  if (typeof window === 'undefined') return false
+  return window.scrollY > 0
+}

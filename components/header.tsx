@@ -1,9 +1,12 @@
+'use client'
+
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
+import { Models } from 'node-appwrite'
+import { useEffect, useState } from 'react'
 
 import { buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
-import { getLoggedInUser, getUserAccount } from '@/lib/appwrite/server'
 import { cn } from '@/lib/utils'
 
 import { CommandMenu } from './menu/command-menu'
@@ -12,12 +15,32 @@ import { MainNav } from './nav/main-nav'
 import { MobileNav } from './nav/mobile-nav'
 import { ThemeToggle } from './theme-toggle'
 
-export async function Header() {
-  const isLoggedIn = await getLoggedInUser()
-  const account = await getUserAccount(isLoggedIn?.$id ?? '')
+interface HeaderProps {
+  isLoggedIn: any
+  account: Models.Document | null
+}
+
+export function Header({ isLoggedIn, account }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const headerClasses = cn(
+    'sticky top-0 z-50 w-full border-b transition-all duration-200',
+    isScrolled
+      ? 'border-border/40 bg-background'
+      : 'border-transparent bg-transparent'
+  )
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className={headerClasses}>
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <MainNav />
         <MobileNav />

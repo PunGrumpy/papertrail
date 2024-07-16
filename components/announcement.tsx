@@ -7,7 +7,7 @@ export function Announcement() {
   return (
     <Link
       href="/docs"
-      className="group rounded-full border border-primary/10 text-sm transition-all ease-in hover:cursor-pointer hover:bg-primary/5"
+      className="group rounded-full border border-primary/10 bg-background text-base transition-all ease-in hover:cursor-pointer hover:bg-primary/5"
     >
       <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-primary hover:duration-300">
         <span>✨ Introducing Papertrial</span>
