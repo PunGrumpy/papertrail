@@ -37,31 +37,31 @@ const SkeletonOne = () => {
     <motion.div
       initial="initial"
       whileHover="animate"
-      className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex size-full min-h-24 flex-1 flex-col space-y-2"
+      className="flex size-full min-h-24 flex-1 flex-col space-y-2 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
     >
       <motion.div
         variants={variants}
-        className="flex flex-row items-center space-x-2 rounded-full border border-neutral-100 bg-white p-2 dark:border-white/[0.2] dark:bg-black"
+        className="flex flex-row items-center space-x-2 rounded-full border border-border bg-background p-2"
       >
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-pink-500 to-violet-500" />
+        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-lime-500 to-green-500" />
         <span className="truncate font-mono text-xs">INFO 8ms GET / 200</span>
       </motion.div>
       <motion.div
         variants={variantsSecond}
-        className="ml-auto flex w-3/4 flex-row items-center space-x-2 rounded-full border border-neutral-100 bg-white p-2 dark:border-white/[0.2] dark:bg-black"
+        className="ml-auto flex w-3/4 flex-row items-center space-x-2 rounded-full border border-border bg-background p-2"
       >
         <span className="truncate font-mono text-xs">
-          INFO 1ms POST /session 201
+          ERROR 1ms POST /login 401
         </span>
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-pink-500 to-violet-500" />
+        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-red-500 to-violet-500" />
       </motion.div>
       <motion.div
         variants={variants}
-        className="flex flex-row items-center space-x-2 rounded-full border border-neutral-100 bg-white p-2 dark:border-white/[0.2] dark:bg-black"
+        className="flex flex-row items-center space-x-2 rounded-full border border-border bg-background p-2"
       >
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-pink-500 to-violet-500" />
+        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500" />
         <span className="truncate font-mono text-xs">
-          ERROR 4ms GET /not-found 404
+          WARN 4ms GET /api/user 403
         </span>
       </motion.div>
     </motion.div>
