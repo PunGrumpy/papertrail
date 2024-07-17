@@ -1,6 +1,6 @@
 'use client'
 
-import { IconLogs, IconSettings } from '@tabler/icons-react'
+import { IconLogs, IconSettings, IconTable } from '@tabler/icons-react'
 import { motion, Variants } from 'framer-motion'
 import React from 'react'
 
@@ -54,7 +54,7 @@ const itemVariants: Variants = {
 }
 
 const SkeletonOne: React.FC = () => {
-  const variants: Variants = {
+  const skeletonOneVariants: Variants = {
     initial: { x: 0 },
     animate: {
       x: 10,
@@ -62,7 +62,8 @@ const SkeletonOne: React.FC = () => {
       transition: { duration: 0.2 }
     }
   }
-  const variantsSecond: Variants = {
+
+  const skeletonOneVariantsSecond: Variants = {
     initial: { x: 0 },
     animate: {
       x: -10,
@@ -78,18 +79,18 @@ const SkeletonOne: React.FC = () => {
       className="flex size-full min-h-24 flex-1 flex-col space-y-2 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
     >
       <LogEntry
-        variants={variants}
+        variants={skeletonOneVariants}
         color="from-lime-500 to-green-500"
         text="INFO 8ms GET / 200"
       />
       <LogEntry
-        variants={variantsSecond}
+        variants={skeletonOneVariantsSecond}
         color="from-red-500 to-violet-500"
         text="ERROR 1ms POST /login 401"
         isReversed
       />
       <LogEntry
-        variants={variants}
+        variants={skeletonOneVariants}
         color="from-yellow-500 to-orange-500"
         text="WARN 4ms GET /api/user 403"
       />
@@ -150,6 +151,83 @@ const SkeletonTwo: React.FC = () => {
   )
 }
 
+const SkeletonThree: React.FC = () => {
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+  const hours = [
+    '9:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00'
+  ]
+
+  const cellVariants: Variants = {
+    initial: { opacity: 0, scale: 0.9 },
+    animate: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
+    hover: { scale: 1.1, transition: { duration: 0.2 } }
+  }
+
+  const tooltipVariants: Variants = {
+    initial: { opacity: 0, y: 10 },
+    hover: { opacity: 1, y: 0, transition: { duration: 0.2 } }
+  }
+
+  const mockCourses = [
+    'Introduction to AI',
+    'Data Structures',
+    'Web Development',
+    'Computer Networks',
+    'Database Systems'
+  ]
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="initial"
+      animate="animate"
+      className="grid grid-cols-6 gap-0.5 rounded-lg p-2 font-mono text-xs bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
+    >
+      <div className="col-span-1"></div>
+      {days.map(day => (
+        <motion.div
+          key={day}
+          variants={cellVariants}
+          className="text-center font-bold"
+        >
+          {day}
+        </motion.div>
+      ))}
+      {hours.map(hour => (
+        <React.Fragment key={hour}>
+          <motion.div variants={cellVariants} className="pr-1 text-right">
+            {hour}
+          </motion.div>
+          {days.map(day => (
+            <motion.div
+              key={`${day}-${hour}`}
+              variants={cellVariants}
+              whileHover="hover"
+              className="relative"
+            >
+              <motion.div
+                className={cn(
+                  'size-full rounded-md',
+                  Math.random() > 0.7
+                    ? 'bg-orange-500 dark:bg-orange-700'
+                    : 'bg-accent dark:bg-accent'
+                )}
+              ></motion.div>
+            </motion.div>
+          ))}
+        </React.Fragment>
+      ))}
+    </motion.div>
+  )
+}
+
 const projectItems: ProjectItem[] = [
   {
     title: 'Logixlysia',
@@ -175,6 +253,18 @@ const projectItems: ProjectItem[] = [
     className: 'md:col-span-1',
     icon: <IconSettings className="size-4" />,
     href: 'https://github.com/PunGrumpy/kali-dotfiles'
+  },
+  {
+    title: 'KMITL Wizard',
+    description: (
+      <span className="text-sm">
+        A schedule table Chrome extension for KMITL students with a beautiful UI
+      </span>
+    ),
+    header: <SkeletonThree />,
+    className: 'md:col-span-1',
+    icon: <IconTable className="size-4" />,
+    href: 'https://github.com/PunGrumpy/kmitl-wizard'
   }
 ]
 

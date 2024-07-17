@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 
@@ -112,12 +113,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div>
-            <div className="relative flex min-h-screen flex-col bg-background">
-              {children}
+          <TooltipProvider>
+            <div>
+              <div className="relative flex min-h-screen flex-col bg-background">
+                {children}
+              </div>
             </div>
-          </div>
-          <Toaster position="top-center" containerAriaLabel="Toaster" />
+            <Toaster position="top-center" containerAriaLabel="Toaster" />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
