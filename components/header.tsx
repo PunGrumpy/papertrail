@@ -35,7 +35,7 @@ export function Header({ isLoggedIn, account }: HeaderProps) {
   const headerClasses = cn(
     'sticky top-0 z-50 w-full border-b transition-all duration-200',
     isScrolled
-      ? 'border-border/40 bg-background'
+      ? 'border-border/40 bg-background/75 backdrop-blur'
       : 'border-transparent bg-transparent'
   )
 
