@@ -86,6 +86,14 @@ const config = {
         'fade-up': {
           from: { opacity: '0', transform: 'translateY(20px)' },
           to: { opacity: '1', transform: 'none' }
+        },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(calc(-100% - var(--gap)))' }
+        },
+        'marquee-vertical': {
+          from: { transform: 'translateY(0)' },
+          to: { transform: 'translateY(calc(-100% - var(--gap)))' }
         }
       },
       animation: {
@@ -93,7 +101,9 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         shimmer: 'shimmer 8s infinite',
         'fade-in': 'fade-in 1000ms var(--animation-delay, 0ms) ease forwards',
-        'fade-up': 'fade-up 1000ms var(--animation-delay, 0ms) ease forwards'
+        'fade-up': 'fade-up 1000ms var(--animation-delay, 0ms) ease forwards',
+        marquee: 'marquee var(--duration) linear infinite',
+        'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
       }
     }
   },
