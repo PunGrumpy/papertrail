@@ -1,35 +1,73 @@
 'use client'
 
-import { IconLogs, IconSignature } from '@tabler/icons-react'
-import { motion } from 'framer-motion'
+import { IconLogs, IconSettings } from '@tabler/icons-react'
+import { motion, Variants } from 'framer-motion'
+import React from 'react'
 
 import { cn } from '@/lib/utils'
 
 import { BentoGrid, BentoGridItem } from '../ui/bento-grid'
 
-const SkeletonOne = () => {
-  const variants = {
-    initial: {
-      x: 0
-    },
+interface ProjectItem {
+  title: string
+  description: React.ReactNode
+  header: React.ReactNode
+  className: string
+  icon: React.ReactNode
+  href: string
+}
+
+interface LogEntryProps {
+  variants: Variants
+  color: string
+  text: string
+  isReversed?: boolean
+}
+
+const containerVariants: Variants = {
+  initial: {},
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants: Variants = {
+  initial: {
+    opacity: 0,
+    x: -20
+  },
+  animate: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5
+    }
+  },
+  hover: {
+    scale: 1.05,
+    transition: {
+      duration: 0.2
+    }
+  }
+}
+
+const SkeletonOne: React.FC = () => {
+  const variants: Variants = {
+    initial: { x: 0 },
     animate: {
       x: 10,
       rotate: 5,
-      transition: {
-        duration: 0.2
-      }
+      transition: { duration: 0.2 }
     }
   }
-  const variantsSecond = {
-    initial: {
-      x: 0
-    },
+  const variantsSecond: Variants = {
+    initial: { x: 0 },
     animate: {
       x: -10,
       rotate: -5,
-      transition: {
-        duration: 0.2
-      }
+      transition: { duration: 0.2 }
     }
   }
 
@@ -39,91 +77,80 @@ const SkeletonOne = () => {
       whileHover="animate"
       className="flex size-full min-h-24 flex-1 flex-col space-y-2 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
     >
-      <motion.div
+      <LogEntry
         variants={variants}
-        className="flex flex-row items-center space-x-2 rounded-full border border-border bg-background p-2"
-      >
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-lime-500 to-green-500" />
-        <span className="truncate font-mono text-xs">INFO 8ms GET / 200</span>
-      </motion.div>
-      <motion.div
+        color="from-lime-500 to-green-500"
+        text="INFO 8ms GET / 200"
+      />
+      <LogEntry
         variants={variantsSecond}
-        className="ml-auto flex w-3/4 flex-row items-center space-x-2 rounded-full border border-border bg-background p-2"
-      >
-        <span className="truncate font-mono text-xs">
-          ERROR 1ms POST /login 401
-        </span>
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-red-500 to-violet-500" />
-      </motion.div>
-      <motion.div
+        color="from-red-500 to-violet-500"
+        text="ERROR 1ms POST /login 401"
+        isReversed
+      />
+      <LogEntry
         variants={variants}
-        className="flex flex-row items-center space-x-2 rounded-full border border-border bg-background p-2"
-      >
-        <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500" />
-        <span className="truncate font-mono text-xs">
-          WARN 4ms GET /api/user 403
-        </span>
-      </motion.div>
+        color="from-yellow-500 to-orange-500"
+        text="WARN 4ms GET /api/user 403"
+      />
     </motion.div>
   )
 }
 
-const SkeletonTwo = () => {
-  const containerVariants = {
-    initial: {},
-    animate: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
+const LogEntry: React.FC<LogEntryProps> = ({
+  variants,
+  color,
+  text,
+  isReversed = false
+}) => (
+  <motion.div
+    variants={variants}
+    className={`flex flex-row items-center space-x-2 rounded-full border border-border bg-background p-2 ${isReversed ? 'ml-auto w-3/4' : ''}`}
+  >
+    {!isReversed && (
+      <div
+        className={`size-6 shrink-0 rounded-full bg-gradient-to-r ${color}`}
+      />
+    )}
+    <span className="truncate font-mono text-xs">{text}</span>
+    {isReversed && (
+      <div
+        className={`size-6 shrink-0 rounded-full bg-gradient-to-r ${color}`}
+      />
+    )}
+  </motion.div>
+)
 
-  const itemVariants = {
-    initial: {
-      opacity: 0,
-      width: '0%'
-    },
-    animate: {
-      opacity: 1,
-      width: '100%',
-      transition: {
-        duration: 0.5
-      }
-    },
-    hover: {
-      opacity: [0, 1],
-      width: ['0%', '100%'],
-      transition: {
-        duration: 2
-      }
-    }
-  }
-
-  const arr = new Array(6).fill(0)
+const SkeletonTwo: React.FC = () => {
+  const lines = [
+    '$HOME/RiceInstaller.sh',
+    '📦 Installing dependencies...',
+    '📦 Installing Application...',
+    '👋 Thank you for using my script!'
+  ]
 
   return (
     <motion.div
       variants={containerVariants}
       initial="initial"
       animate="animate"
-      whileHover="hover"
-      className="flex size-full min-h-24 flex-1 flex-col space-y-2 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
+      className="flex size-full min-h-24 flex-1 flex-col space-y-2 p-4 font-mono text-sm bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
     >
-      {arr.map((_, i) => (
+      {lines.map((line, i) => (
         <motion.div
-          key={'skeleton-two-' + i}
+          key={`skeleton-two-${i}`}
           variants={itemVariants}
-          style={{
-            maxWidth: Math.random() * (100 - 40) + 40 + '%'
-          }}
-          className="flex h-4 w-full flex-row items-center space-x-2 rounded-full border border-border bg-background p-2"
-        ></motion.div>
+          whileHover="hover"
+          className={`${line.startsWith('$') ? 'font-bold text-blue-700 dark:text-blue-500' : 'text-green-700 dark:text-green-500'}`}
+        >
+          {line}
+        </motion.div>
       ))}
     </motion.div>
   )
 }
 
-const projectItems = [
+const projectItems: ProjectItem[] = [
   {
     title: 'Logixlysia',
     description: (
@@ -146,7 +173,7 @@ const projectItems = [
     ),
     header: <SkeletonTwo />,
     className: 'md:col-span-1',
-    icon: <IconSignature className="size-4" />,
+    icon: <IconSettings className="size-4" />,
     href: 'https://github.com/PunGrumpy/kali-dotfiles'
   }
 ]
