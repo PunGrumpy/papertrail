@@ -1,6 +1,7 @@
 'use client'
 
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
+import { animate, motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { Models } from 'node-appwrite'
 import { useEffect, useState } from 'react'
@@ -22,12 +23,15 @@ interface HeaderProps {
 
 export function Header({ isLoggedIn, account }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
+  const { scrollY } = useScroll()
+  const headerOpacity = useTransform(scrollY, [0, 50], [1, 1])
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0)
     }
 
+    handleScroll()
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -40,7 +44,17 @@ export function Header({ isLoggedIn, account }: HeaderProps) {
   )
 
   return (
-    <header className={headerClasses}>
+    <motion.header
+      className={headerClasses}
+      style={{
+        opacity: headerOpacity,
+        backgroundColor: useTransform(
+          scrollY,
+          [0, 50],
+          ['rgba(var(--background), 0)', 'rgba(var(--background), 0.9)']
+        )
+      }}
+    >
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <MainNav />
         <MobileNav />
@@ -93,6 +107,6 @@ export function Header({ isLoggedIn, account }: HeaderProps) {
           </nav>
         </div>
       </div>
-    </header>
+    </motion.header>
   )
 }
