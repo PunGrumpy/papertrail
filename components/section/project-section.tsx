@@ -128,8 +128,7 @@ const projectItems = [
     title: 'Logixlysia',
     description: (
       <span className="text-sm">
-        A beautiful and simple logging middleware for ElysiaJS with colors and
-        timestamps
+        A beautiful and simple logging middleware for ElysiaJS with colors
       </span>
     ),
     header: <SkeletonOne />,
