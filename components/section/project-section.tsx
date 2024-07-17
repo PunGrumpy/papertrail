@@ -79,7 +79,8 @@ const items = [
     ),
     header: <SkeletonOne />,
     className: 'md:col-span-1',
-    icon: <IconLogs className="size-4" />
+    icon: <IconLogs className="size-4" />,
+    href: 'https://github.com/PunGrumpy/logixlysia'
   }
 ]
 
@@ -95,6 +96,7 @@ export function ProjectSection() {
             header={item.header}
             className={cn('[&>p:text-lg]', item.className)}
             icon={item.icon}
+            href={item.href}
           />
         ))}
       </BentoGrid>
