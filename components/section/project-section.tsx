@@ -1,6 +1,14 @@
 'use client'
 
-import { IconLogs, IconSettings, IconTable } from '@tabler/icons-react'
+import {
+  IconBrandNextjs,
+  IconBrandTailwind,
+  IconBrandTypescript,
+  IconLogs,
+  IconSettings,
+  IconTable,
+  IconWorld
+} from '@tabler/icons-react'
 import { motion, Variants } from 'framer-motion'
 import React from 'react'
 
@@ -196,6 +204,59 @@ const SkeletonThree: React.FC = () => {
   )
 }
 
+const SkeletonFour: React.FC = () => {
+  const first = {
+    initial: { x: 20, rotate: -5 },
+    hover: { x: 0, rotate: 0 }
+  }
+  const second = {
+    initial: { x: -20, rotate: 5 },
+    hover: { x: 0, rotate: 0 }
+  }
+  return (
+    <motion.div
+      initial="initial"
+      animate="animate"
+      whileHover="hover"
+      className="flex size-full min-h-24 flex-1 flex-row space-x-2 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
+    >
+      <motion.div
+        variants={first}
+        className="flex h-full w-1/3 flex-col items-center justify-center rounded-2xl border border-border bg-background p-4"
+      >
+        <IconBrandNextjs className="size-10" />
+        <p className="mt-4 text-center text-xs font-semibold text-muted-foreground sm:text-sm">
+          Next.js is the best framework
+        </p>
+        <p className="mt-4 rounded-full border border-red-500 bg-red-100 px-2 py-0.5 text-xs text-red-600 dark:bg-red-900/20">
+          Powerful
+        </p>
+      </motion.div>
+      <motion.div className="relative z-20 flex h-full w-1/3 flex-col items-center justify-center rounded-2xl border border-border bg-background p-4">
+        <IconBrandTailwind className="size-10" />
+        <p className="mt-4 text-center text-xs font-semibold text-muted-foreground sm:text-sm">
+          Tailwind CSS is cool, you know
+        </p>
+        <p className="mt-4 rounded-full border border-green-500 bg-green-100 px-2 py-0.5 text-xs text-green-600 dark:bg-green-900/20">
+          Sensible
+        </p>
+      </motion.div>
+      <motion.div
+        variants={second}
+        className="flex h-full w-1/3 flex-col items-center justify-center rounded-2xl border border-border bg-background p-4"
+      >
+        <IconBrandTypescript className="size-10" />
+        <p className="mt-4 text-center text-xs font-semibold text-muted-foreground sm:text-sm">
+          Quick and easy with TypeScript
+        </p>
+        <p className="mt-4 rounded-full border border-orange-500 bg-orange-100 px-2 py-0.5 text-xs text-orange-600 dark:bg-orange-900/20">
+          Type-safe
+        </p>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 const projectItems: ProjectItem[] = [
   {
     title: 'Logixlysia',
@@ -233,6 +294,19 @@ const projectItems: ProjectItem[] = [
     className: 'md:col-span-1',
     icon: <IconTable className="size-4" />,
     href: 'https://github.com/PunGrumpy/kmitl-wizard'
+  },
+  {
+    title: 'Portfolio',
+    description: (
+      <span className="text-sm">
+        Design and development of personal portfolio website with Next.js and
+        Tailwind CSS
+      </span>
+    ),
+    header: <SkeletonFour />,
+    className: 'md:col-span-2',
+    icon: <IconWorld className="size-4" />,
+    href: '/'
   }
 ]
 
