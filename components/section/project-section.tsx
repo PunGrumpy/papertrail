@@ -123,7 +123,7 @@ const SkeletonTwo = () => {
   )
 }
 
-const items = [
+const projectItems = [
   {
     title: 'Logixlysia',
     description: (
@@ -156,7 +156,7 @@ export function ProjectSection() {
   return (
     <section id="projects" className="mx-auto my-24 max-w-7xl px-6 md:px-8">
       <BentoGrid className="mx-auto max-w-4xl animate-fade-in opacity-0 transition-all ease-in md:auto-rows-[20rem]">
-        {items.map((item, i) => (
+        {projectItems.map((item, i) => (
           <BentoGridItem
             key={i}
             title={item.title}
