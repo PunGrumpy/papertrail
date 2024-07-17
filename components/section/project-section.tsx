@@ -34,68 +34,15 @@ const containerVariants: Variants = {
 }
 
 const itemVariants: Variants = {
-  initial: {
-    opacity: 0,
-    x: -20
-  },
-  animate: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.5
-    }
-  },
-  hover: {
-    scale: 1.05,
-    transition: {
-      duration: 0.2
-    }
-  }
+  initial: { opacity: 0, x: -20 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  hover: { scale: 1.05, transition: { duration: 0.2 } }
 }
 
-const SkeletonOne: React.FC = () => {
-  const skeletonOneVariants: Variants = {
-    initial: { x: 0 },
-    animate: {
-      x: 10,
-      rotate: 5,
-      transition: { duration: 0.2 }
-    }
-  }
-
-  const skeletonOneVariantsSecond: Variants = {
-    initial: { x: 0 },
-    animate: {
-      x: -10,
-      rotate: -5,
-      transition: { duration: 0.2 }
-    }
-  }
-
-  return (
-    <motion.div
-      initial="initial"
-      whileHover="animate"
-      className="flex size-full min-h-24 flex-1 flex-col space-y-2 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
-    >
-      <LogEntry
-        variants={skeletonOneVariants}
-        color="from-lime-500 to-green-500"
-        text="INFO 8ms GET / 200"
-      />
-      <LogEntry
-        variants={skeletonOneVariantsSecond}
-        color="from-red-500 to-violet-500"
-        text="ERROR 1ms POST /login 401"
-        isReversed
-      />
-      <LogEntry
-        variants={skeletonOneVariants}
-        color="from-yellow-500 to-orange-500"
-        text="WARN 4ms GET /api/user 403"
-      />
-    </motion.div>
-  )
+const cellVariants: Variants = {
+  initial: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
+  hover: { scale: 1.1, transition: { duration: 0.2 } }
 }
 
 const LogEntry: React.FC<LogEntryProps> = ({
@@ -122,6 +69,42 @@ const LogEntry: React.FC<LogEntryProps> = ({
   </motion.div>
 )
 
+const SkeletonOne: React.FC = () => {
+  const variants: Variants = {
+    initial: { x: 0 },
+    animate: { x: 10, rotate: 5, transition: { duration: 0.2 } }
+  }
+  const variantsSecond: Variants = {
+    initial: { x: 0 },
+    animate: { x: -10, rotate: -5, transition: { duration: 0.2 } }
+  }
+
+  return (
+    <motion.div
+      initial="initial"
+      whileHover="animate"
+      className="flex size-full min-h-24 flex-1 flex-col space-y-2 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
+    >
+      <LogEntry
+        variants={variants}
+        color="from-lime-500 to-green-500"
+        text="INFO 8ms GET / 200"
+      />
+      <LogEntry
+        variants={variantsSecond}
+        color="from-red-500 to-violet-500"
+        text="ERROR 1ms POST /login 401"
+        isReversed
+      />
+      <LogEntry
+        variants={variants}
+        color="from-yellow-500 to-orange-500"
+        text="WARN 4ms GET /api/user 403"
+      />
+    </motion.div>
+  )
+}
+
 const SkeletonTwo: React.FC = () => {
   const lines = [
     '$HOME/RiceInstaller.sh',
@@ -142,7 +125,11 @@ const SkeletonTwo: React.FC = () => {
           key={`skeleton-two-${i}`}
           variants={itemVariants}
           whileHover="hover"
-          className={`${line.startsWith('$') ? 'font-bold text-blue-700 dark:text-blue-500' : 'text-green-700 dark:text-green-500'}`}
+          className={
+            line.startsWith('$')
+              ? 'font-bold text-blue-700 dark:text-blue-500'
+              : 'text-green-700 dark:text-green-500'
+          }
         >
           {line}
         </motion.div>
@@ -162,25 +149,6 @@ const SkeletonThree: React.FC = () => {
     '14:00',
     '15:00',
     '16:00'
-  ]
-
-  const cellVariants: Variants = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
-    hover: { scale: 1.1, transition: { duration: 0.2 } }
-  }
-
-  const tooltipVariants: Variants = {
-    initial: { opacity: 0, y: 10 },
-    hover: { opacity: 1, y: 0, transition: { duration: 0.2 } }
-  }
-
-  const mockCourses = [
-    'Introduction to AI',
-    'Data Structures',
-    'Web Development',
-    'Computer Networks',
-    'Database Systems'
   ]
 
   return (
@@ -214,10 +182,10 @@ const SkeletonThree: React.FC = () => {
             >
               <motion.div
                 className={cn(
-                  'size-full rounded-md',
+                  'size-full rounded-sm',
                   Math.random() > 0.7
                     ? 'bg-orange-500 dark:bg-orange-700'
-                    : 'bg-accent dark:bg-accent'
+                    : 'bg-accent/50 backdrop-blur-sm'
                 )}
               ></motion.div>
             </motion.div>
