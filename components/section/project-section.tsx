@@ -83,7 +83,7 @@ const SkeletonOne: React.FC = () => {
     <motion.div
       initial="initial"
       whileHover="animate"
-      className="flex size-full min-h-24 flex-1 flex-col space-y-2 transition-all duration-300 bg-dot-black/[0.2] hover:[mask-image:none] dark:bg-dot-white/[0.2] md:[mask-image:radial-gradient(ellipse_at_center,white,transparent)]"
+      className="flex size-full min-h-24 flex-1 flex-col space-y-2 transition-all duration-300 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
     >
       <LogEntry
         variants={variants}
@@ -118,7 +118,7 @@ const SkeletonTwo: React.FC = () => {
       variants={containerVariants}
       initial="initial"
       animate="animate"
-      className="flex size-full min-h-24 flex-1 flex-col space-y-2 p-4 font-mono text-sm transition-all duration-300 bg-dot-black/[0.2] hover:[mask-image:none] dark:bg-dot-white/[0.2] md:[mask-image:radial-gradient(ellipse_at_center,white,transparent)]"
+      className="flex size-full min-h-24 flex-1 flex-col space-y-2 p-4 font-mono text-sm transition-all duration-300 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
     >
       {lines.map((line, i) => (
         <motion.div
@@ -156,7 +156,7 @@ const SkeletonThree: React.FC = () => {
       variants={containerVariants}
       initial="initial"
       animate="animate"
-      className="grid grid-cols-6 gap-0.5 rounded-lg p-2 font-mono text-xs transition-all duration-300 bg-dot-black/[0.2] hover:[mask-image:none] dark:bg-dot-white/[0.2] md:[mask-image:radial-gradient(ellipse_at_center,white,transparent)]"
+      className="grid grid-cols-6 gap-0.5 rounded-lg p-2 font-mono text-xs transition-all duration-300 bg-dot-black/[0.2] dark:bg-dot-white/[0.2]"
     >
       <div className="col-span-1"></div>
       {days.map(day => (
@@ -182,7 +182,7 @@ const SkeletonThree: React.FC = () => {
             >
               <motion.div
                 className={cn(
-                  'size-full rounded-md',
+                  'size-full rounded-sm',
                   Math.random() > 0.7
                     ? 'bg-orange-500 dark:bg-orange-700'
                     : 'bg-accent'
