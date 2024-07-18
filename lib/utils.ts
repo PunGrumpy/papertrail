@@ -15,3 +15,19 @@ export const getStringFromBuffer = (buffer: ArrayBuffer) =>
   Array.from(new Uint8Array(buffer))
     .map(b => b.toString(16).padStart(2, '0'))
     .join('')
+
+export const shuffleArray = <T>(array: T[]) => {
+  let currentIndex = array.length
+  let temporaryValue: T
+
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
+
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
+  }
+
+  return array
+}
