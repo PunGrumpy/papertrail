@@ -15,5 +15,5 @@ export const SignInSchema = z.object({
 export const profileSchema = z.object({
   name: z.string().min(2, { message: 'Name is too short' }),
   email: z.string().email({ message: 'Invalid email address' }),
-  bio: z.string().max(200, { message: 'Bio is too long' }).optional()
+  bio: z.string().max(200, { message: 'Bio is too long' }).optional().nullable()
 })
