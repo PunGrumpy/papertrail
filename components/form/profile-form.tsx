@@ -94,6 +94,8 @@ export function ProfileForm({ user }: { user: any }) {
             placeholder="Tell us a little bit about yourself"
             className="resize-none"
             {...field}
+            value={field.value ?? ''}
+            onChange={e => field.onChange(e.target.value || null)}
           />
         </FormControl>
         <FormDescription>
