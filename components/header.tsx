@@ -4,7 +4,7 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { Models } from 'node-appwrite'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
@@ -25,6 +25,8 @@ export function Header({ isLoggedIn, account }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const { scrollY } = useScroll()
   const headerOpacity = useTransform(scrollY, [0, 50], [1, 1])
+
+  const memoizedAccount = useMemo(() => account, [account])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,7 +102,7 @@ export function Header({ isLoggedIn, account }: HeaderProps) {
                 </>
               ) : (
                 <>
-                  <DropdownMenuClient session={account} />
+                  <DropdownMenuClient session={memoizedAccount} />
                 </>
               )}
             </div>
