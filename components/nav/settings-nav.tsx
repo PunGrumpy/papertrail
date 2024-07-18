@@ -28,8 +28,8 @@ export function SettingsNav({ className, items, ...props }: SettingsNavItem) {
             className={cn(
               buttonVariants({ variant: 'ghost' }),
               pathname === item.href
-                ? 'bg-muted hover:bg-muted'
-                : 'hover:bg-transparent hover:underline',
+                ? 'bg-muted hover:bg-muted/50'
+                : 'hover:bg-muted/50',
               'justify-start'
             )}
           >
