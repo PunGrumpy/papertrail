@@ -58,7 +58,7 @@ const SkeletonFrontend: React.FC = () => {
           Tailwind CSS is cool, you know
         </p>
         <p className="mt-4 rounded-full border border-green-500 bg-green-100 px-2 py-0.5 text-xs text-green-600 dark:bg-green-900/20">
-          Sensible
+          Flexible
         </p>
       </motion.div>
       <motion.div
