@@ -84,32 +84,21 @@ export const SkeletonDevOps: React.FC = () => {
     }, [controls, inView])
 
     return (
-      // <motion.div
-      //   ref={ref}
-      //   initial={{ opacity: 0 }}
-      //   animate={controls}
-      //   className={cn(
-      //     'relative size-16 cursor-pointer overflow-hidden rounded-2xl border p-4',
-      //     'bg-background',
-      //     'transform-gpu [border:0_-20px_80px_-20px_#ffffff1f_inset] [box-shadow:1px_solid_rgba(255,255,255,.1)]'
-      //   )}
-      // >
-      //   {tool.icon}
-      //   <div
-      //     className={`pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r ${tool.bg} opacity-70 blur-xl`}
-      //   />
-      // </motion.div>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className="relative size-16 transform-gpu cursor-pointer overflow-hidden rounded-2xl border bg-background p-4 [border:0_-20px_80px_-20px_#ffffff1f_inset] [box-shadow:1px_solid_rgba(255,255,255,.1)]">
-            {tool.icon}
-            <div
-              className={`pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r ${tool.bg} opacity-70 blur-xl`}
-            />
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>{tool.name}</TooltipContent>
-      </Tooltip>
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0 }}
+        animate={controls}
+        className={cn(
+          'relative size-16 cursor-pointer overflow-hidden rounded-2xl border p-4',
+          'bg-background',
+          'transform-gpu [border:0_-20px_80px_-20px_#ffffff1f_inset] [box-shadow:1px_solid_rgba(255,255,255,.1)]'
+        )}
+      >
+        {tool.icon}
+        <div
+          className={`pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r ${tool.bg} opacity-70 blur-xl`}
+        />
+      </motion.div>
     )
   }
 
