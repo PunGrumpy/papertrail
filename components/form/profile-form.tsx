@@ -43,13 +43,18 @@ export function ProfileForm({ user }: { user: any }) {
     }
     toast.success('Profile updated successfully!', {
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <pre className="mt-2 rounded-md bg-muted p-2">
           <code className="text-white">
             {JSON.stringify(submissionData, null, 2)}
           </code>
         </pre>
       )
     })
+  }
+
+  const handleChangeAvatar = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    toast.error('This feature is not available yet.')
   }
 
   return (
@@ -72,11 +77,10 @@ export function ProfileForm({ user }: { user: any }) {
               </Avatar>
               <div className="space-y-2">
                 <Button
+                  type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    toast.error('This feature is not available yet.')
-                  }}
+                  onClick={handleChangeAvatar}
                 >
                   Change avatar
                 </Button>
