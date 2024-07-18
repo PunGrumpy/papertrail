@@ -1,7 +1,7 @@
 'use client'
 
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
-import { animate, motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { Models } from 'node-appwrite'
 import { useEffect, useState } from 'react'
