@@ -9,7 +9,9 @@ import { z } from 'zod'
 
 import { profileSchema } from '@/lib/validations'
 
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import {
   Form,
   FormControl,
@@ -53,62 +55,76 @@ export function ProfileForm({ user }: { user: any }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormItem>
-          <FormLabel>Avatar</FormLabel>
-          <FormControl>
+        <Card className="shadow-none">
+          <CardHeader>
+            <CardTitle>Avatar</CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="flex items-center space-x-4">
-              <Image
-                src={user.avatar}
-                alt="User avatar"
-                className="size-16 rounded-full"
-                width={64}
-                height={64}
-              />
-              <Button variant="ghost" disabled>
-                Change avatar
-              </Button>
+              <Avatar
+                title="User avatar"
+                className="size-20 border [border:0_-20px_80px_-20px_#ffffff1f_inset] [box-shadow:1px_solid_rgba(255,255,255,.1)]"
+              >
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback>
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="space-y-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    toast.error('This feature is not available yet.')
+                  }}
+                >
+                  Change avatar
+                </Button>
+                <FormDescription className="text-sm">
+                  Click on the avatar to upload a custom one from your files.
+                  <br />
+                  You can only change this once every 30 days.
+                </FormDescription>
+              </div>
             </div>
-          </FormControl>
-          <FormDescription>
-            This is your avatar. You can only change this once every 30 days.
-          </FormDescription>
-          <FormMessage />
-        </FormItem>
+          </CardContent>
+        </Card>
 
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Paper Trail" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your name. You can only change this once every 30 days.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid gap-6">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Paper Trail" {...field} />
+                </FormControl>
+                <FormDescription>
+                  You can only change this once every 30 days.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="p@example.com" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your email address. You can only change this once every
-                30 days.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="p@example.com" {...field} />
+                </FormControl>
+                <FormDescription>
+                  You can only change this once every 30 days.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -137,7 +153,9 @@ export function ProfileForm({ user }: { user: any }) {
           )}
         />
 
-        <Button type="submit">Update profile</Button>
+        <Button type="submit" className="w-full md:w-auto">
+          Update profile
+        </Button>
       </form>
     </Form>
   )
