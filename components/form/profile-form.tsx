@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import Image from 'next/image'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -52,6 +53,28 @@ export function ProfileForm({ user }: { user: any }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormItem>
+          <FormLabel>Avatar</FormLabel>
+          <FormControl>
+            <div className="flex items-center space-x-4">
+              <Image
+                src={user.avatar}
+                alt="User avatar"
+                className="size-16 rounded-full"
+                width={64}
+                height={64}
+              />
+              <Button variant="ghost" disabled>
+                Change avatar
+              </Button>
+            </div>
+          </FormControl>
+          <FormDescription>
+            This is your avatar. You can only change this once every 30 days.
+          </FormDescription>
+          <FormMessage />
+        </FormItem>
+
         <FormField
           control={form.control}
           name="name"
