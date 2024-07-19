@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
       console.error('Error saving user account:', error)
     }
 
-    return NextResponse.redirect(`${request.nextUrl.origin}/docs`)
+    return NextResponse.redirect(`${request.nextUrl.origin}`)
   } catch (error) {
     console.error('Error in OAuth callback:', error)
     return NextResponse.json(
