@@ -28,7 +28,9 @@ export function useAuth() {
           JSON.stringify({ status, timestamp: Date.now() })
         )
       } catch (error) {
-        console.error('Error checking authentication:', error)
+        if (error instanceof Error) {
+          throw new Error(`Failed to check auth status: ${error.message}`)
+        }
         setIsAuthenticated(false)
         localStorage.removeItem(AUTH_CACHE_KEY)
       }

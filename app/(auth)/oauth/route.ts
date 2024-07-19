@@ -58,15 +58,15 @@ export async function GET(request: NextRequest) {
         )
       }
     } catch (error) {
-      console.error('Error saving user account:', error)
+      if (error instanceof Error) {
+        throw new Error(`Failed to create user account: ${error.message}`)
+      }
     }
 
     return NextResponse.redirect(`${request.nextUrl.origin}/docs`)
   } catch (error) {
-    console.error('Error in OAuth callback:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
   }
 }

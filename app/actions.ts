@@ -49,7 +49,9 @@ export async function getCookie(
 
     return { name: cookie.name, value: cookie.value }
   } catch (error) {
-    console.error(`Error retrieving cookie ${name}:`, error)
+    if (error instanceof Error) {
+      throw new Error(`Failed to get cookie ${name}: ${error.message}`)
+    }
     return undefined
   }
 }

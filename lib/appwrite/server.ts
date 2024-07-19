@@ -97,7 +97,7 @@ export async function updateUserAccount(accountId: string, data: UpdateUser) {
     }
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(`Failed to update user account ${error.message}`)
+      throw new Error(`Failed to update user account: ${error.message}`)
     }
     throw new Error('Failed to update user account')
   }

@@ -13,11 +13,10 @@ export async function updateProfile(data: UpdateUser) {
     const updatedUser = await updateUserAccount(currentUser.$id, data)
     return { success: true, user: updatedUser }
   } catch (error) {
-    console.error('Error updating profile:', error)
     if (error instanceof Error) {
       return {
         success: false,
-        error: `Failed to update profile ${error.message}`
+        error: `Failed to update profile: ${error.message}`
       }
     }
     return {

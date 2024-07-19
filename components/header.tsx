@@ -35,7 +35,9 @@ export function Header() {
         setAccount(null)
       }
     } catch (error) {
-      console.error('Error fetching user data:', error)
+      if (error instanceof Error) {
+        throw new Error(`Failed to fetch user data: ${error.message}`)
+      }
       setIsLoggedIn(false)
       setAccount(null)
     }
