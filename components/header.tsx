@@ -4,10 +4,11 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { Models } from 'node-appwrite'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
+import { getLoggedInUser, getUserAccount } from '@/lib/appwrite/server'
 import { cn } from '@/lib/utils'
 
 import { CommandMenu } from './menu/command-menu'
@@ -16,17 +17,43 @@ import { MainNav } from './nav/main-nav'
 import { MobileNav } from './nav/mobile-nav'
 import { ThemeToggle } from './theme-toggle'
 
-interface HeaderProps {
-  isLoggedIn: any
-  account: Models.Document | null
-}
-
-export function Header({ isLoggedIn, account }: HeaderProps) {
+export function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [account, setAccount] = useState<Models.Document | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
   const { scrollY } = useScroll()
   const headerOpacity = useTransform(scrollY, [0, 50], [1, 1])
 
-  const memoizedAccount = useMemo(() => account, [account])
+  const fetchUserData = async () => {
+    try {
+      const user = await getLoggedInUser()
+      setIsLoggedIn(!!user)
+      if (user) {
+        const accountData = await getUserAccount(user.$id)
+        setAccount(accountData)
+      } else {
+        setAccount(null)
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error)
+      setIsLoggedIn(false)
+      setAccount(null)
+    }
+  }
+
+  useEffect(() => {
+    fetchUserData()
+
+    const handleLoginEvent = () => {
+      fetchUserData()
+    }
+
+    window.addEventListener('user-logged-in', handleLoginEvent)
+
+    return () => {
+      window.removeEventListener('user-logged-in', handleLoginEvent)
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,7 +129,7 @@ export function Header({ isLoggedIn, account }: HeaderProps) {
                 </>
               ) : (
                 <>
-                  <DropdownMenuClient session={memoizedAccount} />
+                  <DropdownMenuClient session={account} />
                 </>
               )}
             </div>

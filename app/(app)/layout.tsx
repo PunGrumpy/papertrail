@@ -12,7 +12,7 @@ export default async function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} account={account} />
+      <Header />
       <main className="flex-1">{children}</main>
       <Footer />
     </>
