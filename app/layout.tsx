@@ -115,13 +115,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <TooltipProvider>
-            <MillionLintProvider>
-              <div>
-                <div className="relative flex min-h-screen flex-col bg-background">
-                  {children}
-                </div>
+            <div>
+              <div className="relative flex min-h-screen flex-col bg-background">
+                {children}
               </div>
-            </MillionLintProvider>
+            </div>
             <Toaster position="bottom-right" containerAriaLabel="Toaster" />
           </TooltipProvider>
         </ThemeProvider>
