@@ -3,59 +3,21 @@
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { Models } from 'node-appwrite'
 import { useEffect, useState } from 'react'
 
 import { buttonVariants } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
-import { getLoggedInUser, getUserAccount } from '@/lib/appwrite/server'
 import { cn } from '@/lib/utils'
 
 import { CommandMenu } from './menu/command-menu'
-import { DropdownMenuClient } from './menu/dropdown-menu'
 import { MainNav } from './nav/main-nav'
 import { MobileNav } from './nav/mobile-nav'
 import { ThemeToggle } from './theme-toggle'
 
 export function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [account, setAccount] = useState<Models.Document | null>(null)
   const [isScrolled, setIsScrolled] = useState(false)
   const { scrollY } = useScroll()
   const headerOpacity = useTransform(scrollY, [0, 50], [1, 1])
-
-  const fetchUserData = async () => {
-    try {
-      const user = await getLoggedInUser()
-      setIsLoggedIn(!!user)
-      if (user) {
-        const accountData = await getUserAccount(user.$id)
-        setAccount(accountData)
-      } else {
-        setAccount(null)
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Failed to fetch user data: ${error.message}`)
-      }
-      setIsLoggedIn(false)
-      setAccount(null)
-    }
-  }
-
-  useEffect(() => {
-    fetchUserData()
-
-    const handleLoginEvent = () => {
-      fetchUserData()
-    }
-
-    window.addEventListener('user-logged-in', handleLoginEvent)
-
-    return () => {
-      window.removeEventListener('user-logged-in', handleLoginEvent)
-    }
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,26 +76,18 @@ export function Header() {
               </Link>
               <ThemeToggle />
             </div>
-            <div className="flex items-center space-x-2">
-              {!isLoggedIn ? (
-                <>
-                  <div className="hidden md:flex">
-                    <Link
-                      href="/signin"
-                      className={cn(buttonVariants({ variant: 'outline' }))}
-                    >
-                      Log in
-                    </Link>
-                  </div>
-                  <Link href="/signup" className={cn(buttonVariants())}>
-                    Sign up
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <DropdownMenuClient session={account} />
-                </>
-              )}
+            <div className="hidden items-center space-x-2">
+              <div className="hidden md:flex">
+                <Link
+                  href="/signin"
+                  className={cn(buttonVariants({ variant: 'outline' }))}
+                >
+                  Log in
+                </Link>
+              </div>
+              <Link href="/signup" className={cn(buttonVariants())}>
+                Sign up
+              </Link>
             </div>
           </nav>
         </div>
