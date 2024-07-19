@@ -10,43 +10,53 @@ import Marquee from '../../ui/marquee'
 const tools = [
   {
     name: 'Git',
-    icon: <IconBrandGit className="size-full" />
+    icon: <IconBrandGit className="size-full" />,
+    bg: 'from-orange-500 to-yellow-600'
   },
   {
     name: 'Docker',
-    icon: <Icons.docker className="size-full" />
+    icon: <Icons.docker className="size-full" />,
+    bg: 'from-blue-500 to-cyan-600'
   },
   {
     name: 'Kubernetes',
-    icon: <Icons.kubernetes className="size-full" />
+    icon: <Icons.kubernetes className="size-full" />,
+    bg: 'from-indigo-500 to-purple-600'
   },
   {
     name: 'Helm',
-    icon: <Icons.helm className="size-full" />
+    icon: <Icons.helm className="size-full" />,
+    bg: 'from-sky-500 to-blue-600'
   },
   {
     name: 'GitHub Actions',
-    icon: <Icons.githubActions className="size-full" />
+    icon: <Icons.githubActions className="size-full" />,
+    bg: 'from-teal-500 to-blue-600'
   },
   {
     name: 'Travis CI',
-    icon: <Icons.travisCI className="size-full" />
+    icon: <Icons.travisCI className="size-full" />,
+    bg: 'from-amber-500 to-orange-800'
   },
   {
     name: 'ArgoCD',
-    icon: <Icons.argoCD className="size-full" />
+    icon: <Icons.argoCD className="size-full" />,
+    bg: 'from-orange-500 to-blue-500'
   },
   {
     name: 'DigitalOcean',
-    icon: <Icons.digitalOcean className="size-full" />
+    icon: <Icons.digitalOcean className="size-full" />,
+    bg: 'from-blue-500 to-blue-500'
   },
   {
     name: 'Terraform',
-    icon: <Icons.terraform className="size-full" />
+    icon: <Icons.terraform className="size-full" />,
+    bg: 'from-purple-500 to-purple-600'
   },
   {
     name: 'Prometheus',
-    icon: <Icons.prometheus className="size-full" />
+    icon: <Icons.prometheus className="size-full" />,
+    bg: 'from-red-500 to-red-600'
   }
 ]
 
@@ -72,6 +82,9 @@ const DevOpsCard: React.FC<{ tool: (typeof tools)[0] }> = ({ tool }) => {
       className="relative size-16 cursor-pointer overflow-hidden rounded-2xl border border-border bg-background p-4"
     >
       {tool.icon}
+      <div
+        className={`pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r ${tool.bg} opacity-70 blur-xl`}
+      />
     </motion.div>
   )
 }
