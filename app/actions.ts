@@ -2,9 +2,6 @@
 
 import { cookies } from 'next/headers'
 
-import { getLoggedInUser, updateUserAccount } from '@/lib/appwrite/server'
-import { UpdateUser } from '@/types/user'
-
 interface CookieOptions {
   name: string
   value?: string
@@ -66,23 +63,4 @@ export async function onScroll(): Promise<boolean> {
   // check if the user has scrolled
   if (typeof window === 'undefined') return false
   return window.scrollY > 0
-}
-
-export async function updateProfile(data: UpdateUser) {
-  try {
-    const currentUser = await getLoggedInUser()
-    if (!currentUser) {
-      throw new Error('User not authenticated')
-    }
-
-    const updatedUser = await updateUserAccount(currentUser.$id, data)
-    if (!updatedUser) {
-      throw new Error('Failed to update user profile')
-    }
-
-    return { success: true, user: updatedUser }
-  } catch (error) {
-    console.error('Error updating profile:', error)
-    return { success: false, error: 'Failed to update profile' }
-  }
 }

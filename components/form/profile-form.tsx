@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { updateProfile } from '@/app/actions'
+import { updateProfile } from '@/app/(app)/settings/actions'
 import { profileSchema } from '@/lib/validations'
 import { UpdateUser } from '@/types/user'
 
