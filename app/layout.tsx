@@ -119,7 +119,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 {children}
               </div>
             </div>
-            <Toaster position="top-center" containerAriaLabel="Toaster" />
+            <Toaster position="bottom-right" containerAriaLabel="Toaster" />
           </TooltipProvider>
         </ThemeProvider>
       </body>
