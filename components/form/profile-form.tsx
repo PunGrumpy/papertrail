@@ -1,13 +1,14 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { updateProfile } from '@/app/actions'
 import { profileSchema } from '@/lib/validations'
+import { UpdateUser } from '@/types/user'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
@@ -36,20 +37,22 @@ export function ProfileForm({ user }: { user: any }) {
     }
   })
 
-  const onSubmit = (data: ProfileFormValues) => {
-    const submissionData = {
-      ...data,
+  const onSubmit = async (data: ProfileFormValues) => {
+    const updateData: UpdateUser = {
+      name: data.name,
+      email: data.email,
       bio: data.bio === '' ? null : data.bio
     }
-    toast.success('Profile updated successfully!', {
-      description: (
-        <pre className="mt-2 rounded-md bg-muted p-2">
-          <code className="text-white">
-            {JSON.stringify(submissionData, null, 2)}
-          </code>
-        </pre>
-      )
-    })
+
+    const result = await updateProfile(updateData)
+
+    if (result.success) {
+      toast.success('Profile updated successfully!')
+    } else {
+      toast.error('Failed to update profile', {
+        description: result.error
+      })
+    }
   }
 
   const handleChangeAvatar = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -102,7 +105,7 @@ export function ProfileForm({ user }: { user: any }) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Paper Trail" {...field} />
+                  <Input placeholder="Your Name" {...field} />
                 </FormControl>
                 <FormDescription>
                   You can only change this once every 30 days.
@@ -119,7 +122,7 @@ export function ProfileForm({ user }: { user: any }) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="p@example.com" {...field} />
+                  <Input placeholder="your@email.com" {...field} />
                 </FormControl>
                 <FormDescription>
                   You can only change this once every 30 days.

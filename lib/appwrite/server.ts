@@ -3,6 +3,7 @@
 import { Account, Client, Databases, Query, Users } from 'node-appwrite'
 
 import { getCookie } from '@/app/actions'
+import { UpdateUser } from '@/types/user'
 
 import { SESSION_COOKIE } from '../const'
 
@@ -55,6 +56,27 @@ export async function getUserAccount(accountId: string) {
     )
 
     return userAccount.documents[0]
+  } catch (error) {
+    return null
+  }
+}
+
+export async function updateUserAccount(accountId: string, data: UpdateUser) {
+  try {
+    const { database } = await createAdminClient()
+
+    const userAccount = await getUserAccount(accountId)
+
+    if (!userAccount) {
+      throw new Error('User account not found')
+    }
+
+    return await database.updateDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_USER_COLLECTION_ID!,
+      userAccount.$id,
+      data
+    )
   } catch (error) {
     return null
   }

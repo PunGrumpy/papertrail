@@ -21,10 +21,9 @@ export interface LoginUser {
 }
 
 export interface UpdateUser {
-  firstName: string
-  lastName: string
+  name: string
   email: string
-  password: string
-  avatar: string
-  bio: string
+  // password: string
+  // avatar: string
+  bio?: string | null
 }
