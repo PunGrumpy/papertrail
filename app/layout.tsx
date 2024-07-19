@@ -1,6 +1,5 @@
 import './globals.css'
 
-import { MillionLintProvider } from '@million/lint/runtime'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
