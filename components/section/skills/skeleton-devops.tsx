@@ -2,7 +2,7 @@ import { IconBrandGit } from '@tabler/icons-react'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 
-import { cn, shuffleArray } from '@/lib/utils'
+import { shuffleArray } from '@/lib/utils'
 
 import { Icons } from '../../icons'
 import Marquee from '../../ui/marquee'
