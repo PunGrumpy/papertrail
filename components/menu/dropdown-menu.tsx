@@ -38,7 +38,7 @@ export const DropdownMenuClient = memo(
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar title="User avatar" className="size-8 cursor-pointer">
+          <Avatar title={name} className="size-8 cursor-pointer">
             <AvatarImage src={avatar} alt={name} />
             <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
