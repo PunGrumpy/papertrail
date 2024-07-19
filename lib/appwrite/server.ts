@@ -62,22 +62,43 @@ export async function getUserAccount(accountId: string) {
 }
 
 export async function updateUserAccount(accountId: string, data: UpdateUser) {
+  const { database, user } = await createAdminClient()
+
   try {
-    const { database } = await createAdminClient()
-
-    const userAccount = await getUserAccount(accountId)
-
-    if (!userAccount) {
-      throw new Error('User account not found')
+    const currentUser = await user.get(accountId)
+    if (currentUser.name !== data.name) {
+      await user.updateName(accountId, data.name)
+    }
+    if (currentUser.email !== data.email) {
+      await user.updateEmail(accountId, data.email)
     }
 
-    return await database.updateDocument(
+    const userAccount = await getUserAccount(accountId)
+    if (!userAccount) {
+      throw new Error('User account not found in database')
+    }
+
+    const updatedDatabaseUser = await database.updateDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_USER_COLLECTION_ID!,
       userAccount.$id,
-      data
+      {
+        name: data.name,
+        email: data.email,
+        bio: data.bio
+      }
     )
+
+    const updatedAppwriteAccount = await user.get(accountId)
+
+    return {
+      ...updatedAppwriteAccount,
+      ...updatedDatabaseUser
+    }
   } catch (error) {
-    return null
+    if (error instanceof Error) {
+      throw new Error(`Failed to update user account ${error.message}`)
+    }
+    throw new Error('Failed to update user account')
   }
 }
