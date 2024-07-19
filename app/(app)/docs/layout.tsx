@@ -1,18 +1,32 @@
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 import { DocsSidebarNav } from '@/components/nav/sidebar-nav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { docsConfig } from '@/config/docs'
-import { getLoggedInUser } from '@/lib/appwrite/server'
+import { useAuth } from '@/hooks/useAuth'
 
 interface DocsLayoutProps {
   children: React.ReactNode
 }
 
-export default async function DocsLayout({ children }: DocsLayoutProps) {
-  const isLoggedIn = await getLoggedInUser()
+export default function DocsLayout({ children }: DocsLayoutProps) {
+  const router = useRouter()
+  const isAuthenticated = useAuth()
 
-  if (!isLoggedIn) redirect('/signin')
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      toast.error('Authentication required')
+      router.push('/signin')
+    }
+  }, [isAuthenticated, router])
+
+  if (isAuthenticated === false) {
+    return null
+  }
 
   return (
     <div className="border-b">
