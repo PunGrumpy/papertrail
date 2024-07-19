@@ -4,12 +4,19 @@ import { IconGitBranch, IconPalette, IconServer } from '@tabler/icons-react'
 import React from 'react'
 
 import { cn } from '@/lib/utils'
-import { SkillItem } from '@/types/components'
 
 import { BentoGrid, BentoGridItem } from '../ui/bento-grid'
 import { SkeletonBackend } from './skills/skeleton-backend'
 import { SkeletonDevOps } from './skills/skeleton-devops'
 import { SkeletonFrontend } from './skills/skeleton-frontend'
+
+export interface SkillItem {
+  title: string
+  description: React.ReactNode
+  className: string
+  header: React.ReactNode
+  icon: React.ReactNode
+}
 
 const skillItems: SkillItem[] = [
   {
