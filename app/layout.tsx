@@ -108,23 +108,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
           'min-h-screen'
         )}
       >
-        <MillionLintProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <TooltipProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider>
+            <MillionLintProvider>
               <div>
                 <div className="relative flex min-h-screen flex-col bg-background">
                   {children}
                 </div>
               </div>
-              <Toaster position="bottom-right" containerAriaLabel="Toaster" />
-            </TooltipProvider>
-          </ThemeProvider>
-        </MillionLintProvider>
+            </MillionLintProvider>
+            <Toaster position="bottom-right" containerAriaLabel="Toaster" />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
