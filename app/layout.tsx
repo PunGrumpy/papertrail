@@ -1,5 +1,6 @@
 import './globals.css'
 
+import { MillionLintProvider } from '@million/lint/runtime'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
@@ -107,21 +108,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
           'min-h-screen'
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TooltipProvider>
-            <div>
-              <div className="relative flex min-h-screen flex-col bg-background">
-                {children}
+        <MillionLintProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TooltipProvider>
+              <div>
+                <div className="relative flex min-h-screen flex-col bg-background">
+                  {children}
+                </div>
               </div>
-            </div>
-            <Toaster position="bottom-right" containerAriaLabel="Toaster" />
-          </TooltipProvider>
-        </ThemeProvider>
+              <Toaster position="bottom-right" containerAriaLabel="Toaster" />
+            </TooltipProvider>
+          </ThemeProvider>
+        </MillionLintProvider>
       </body>
     </html>
   )
